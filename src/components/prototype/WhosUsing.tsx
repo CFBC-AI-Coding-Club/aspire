@@ -22,7 +22,7 @@ export function WhosUsing({ onContinue }: WhosUsingProps) {
             <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <User className="w-12 h-12 text-white" />
             </div>
-            <h2 className="text-white text-2xl fond-extrabold mb-2">Kid</h2>
+            <h2 className="text-white text-2xl font-extrabold mb-2">Kid</h2>
             <p className="text-white">
               Learn about money and manage your savings
             </p>
@@ -31,15 +31,13 @@ export function WhosUsing({ onContinue }: WhosUsingProps) {
           {/* Parent Profile */}
           <button
             onClick={onContinue}
-            className="bg-linear-to-br from-[#2EC4B6] to-[#2E8BC0] rounded-[24px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all group"
+            className="bg-gradient-to-br from-[#2EC4B6] to-[#2E8BC0] rounded-[24px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all group"
           >
             <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <Users className="w-12 h-12 text-white" />
             </div>
             <h2 className="text-white mb-2">Parent</h2>
-            <p className="text-white">
-              Monitor progress and manage allowances
-            </p>
+            <p className="text-white">Monitor progress and manage allowances</p>
           </button>
         </div>
       </div>
