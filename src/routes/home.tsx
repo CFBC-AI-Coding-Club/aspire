@@ -1,21 +1,20 @@
-import { Card } from "@/components/ui/Card";
-import { useAuth } from "@/contexts/AuthContext";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { Card } from "../components/ui/Card";
+import { Button } from "../components/ui/Button";
 import {
+  leaderboard,
   learningModules,
   achievements,
-  leaderboard,
-  investments,
   getInvestmentsByChildId,
-} from "@/data/dummyData";
-import { Button } from "@base-ui-components/react/button";
-import { createFileRoute, Link, Navigate, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+} from "../data/dummyData";
 
-export const Route = createFileRoute("/")({
-  component: IndexPage,
+export const Route = createFileRoute("/home")({
+  component: HomePage,
 });
 
-function IndexPage() {
+function HomePage() {
   const { currentChild, logout } = useAuth();
   const navigate = useNavigate();
 

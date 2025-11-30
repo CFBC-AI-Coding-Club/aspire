@@ -1,301 +1,224 @@
-Welcome to your new TanStack app! 
+# 🚀 Aspire - Investment Learning Platform for Kids
 
-# Getting Started
+Aspire is a modern, child-friendly web application designed to teach young people about financial investments through gamification, interactive learning modules, and portfolio management.
 
-To run this application:
+## ✨ Features
 
+### For Parents
+- **Parent Dashboard**: Create and manage multiple child accounts
+- **Progress Tracking**: Monitor each child's learning progress and portfolio value
+- **Account Management**: Add children with customized profiles
+
+### For Children
+- **Interactive Learning**: Engaging lessons about money, investing, and financial literacy
+- **Portfolio Management**: Virtual investment portfolio with different asset types
+- **Leaderboard**: Competitive element to motivate learning
+- **Achievements System**: Unlock badges and rewards for completing milestones
+- **Gamification**: Earn points and level up by completing lessons
+
+## 🛠️ Tech Stack
+
+- **Framework**: [TanStack Start](https://tanstack.com/start) with [TanStack Router](https://tanstack.com/router)
+- **UI Components**: [Base UI](https://base-ui.netlify.app/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Language**: TypeScript
+- **State Management**: React Context API
+- **Query Management**: TanStack Query
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ or Bun
+- npm, yarn, or bun package manager
+
+### Installation
+
+1. Clone the repository:
 ```bash
+git clone <repository-url>
+cd aspire
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
 bun install
-bun --bun run start
 ```
 
-# Building For Production
-
-To build this application for production:
-
+3. Run the development server:
 ```bash
-bun --bun run build
+npm run dev
+# or
+bun run dev
 ```
 
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
-
-```bash
-bun --bun run test
+4. Open your browser and navigate to:
+```
+http://localhost:3001
 ```
 
-## Styling
+## 📁 Project Structure
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-
-## Linting & Formatting
-
-This project uses [Biome](https://biomejs.dev/) for linting and formatting. The following scripts are available:
-
-
-```bash
-bun --bun run lint
-bun --bun run format
-bun --bun run check
+```
+aspire/
+├── src/
+│   ├── components/
+│   │   └── ui/           # Reusable UI components (Button, Input, Card)
+│   ├── contexts/         # React Context providers (AuthContext)
+│   ├── data/            # Dummy data for demo purposes
+│   ├── routes/          # TanStack Router route files
+│   │   ├── _auth/       # Authentication routes (login, signup)
+│   │   ├── parent/      # Parent dashboard routes
+│   │   ├── home.tsx     # Child home page with leaderboard
+│   │   ├── learn.tsx    # Learning modules page
+│   │   ├── portfolio.tsx # Portfolio management page
+│   │   └── achievements.tsx # Achievements page
+│   └── styles.css       # Global styles and Tailwind configuration
+├── public/              # Static assets
+└── package.json
 ```
 
+## 🎯 Demo Accounts
 
+For testing purposes, use these demo parent accounts:
 
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
+**Parent Account 1:**
+- Email: `sarah.johnson@email.com`
+- Password: `password123`
 
-### Adding A Route
+**Parent Account 2:**
+- Email: `mike.chen@email.com`
+- Password: `password123`
 
-To add a new route to your application just add another a new file in the `./src/routes` directory.
+## 🎨 Design Philosophy
+
+Aspire follows a child-friendly design approach with:
+
+- **Bright, Engaging Colors**: Blue, teal, coral, and yellow color palette
+- **Large, Clear Typography**: Easy-to-read text for young users
+- **Emoji Icons**: Fun and recognizable visual elements
+- **Smooth Animations**: Engaging transitions and hover effects
+- **Gamification Elements**: Points, levels, and achievements to motivate learning
 
-TanStack will automatically generate the content of the route file for you.
+## 📚 Key Pages
 
-Now that you have two routes you can use a `Link` component to navigate between them.
+### Parent Login & Signup
+Parents can create accounts and manage their children's profiles.
 
-### Adding Links
+### Parent Dashboard
+View all children, their progress, portfolio values, and add new children to the platform.
 
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
+### Child Home Page
+- Personal dashboard with stats
+- Global leaderboard showing top performers
+- Quick access to learning, portfolio, and achievements
+- Recent activity and tips
 
-```tsx
-import { Link } from "@tanstack/react-router";
-```
+### Learning Modules
+- Beginner to advanced lessons
+- Interactive content about money and investing
+- Points and level progression
+- Module completion tracking
 
-Then anywhere in your JSX you can use it like so:
+### Portfolio Page
+- View all investments
+- Track portfolio performance
+- Investment breakdown by type
+- Progress towards goals
 
-```tsx
-<Link to="/about">About</Link>
-```
+### Achievements Page
+- Unlocked and locked achievements
+- Progress tracking
+- Tips for earning new achievements
 
-This will create a link that will navigate to the `/about` route.
+## 🔧 Available Scripts
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+- `npm run dev` - Start development server on port 3001
+- `npm run build` - Build for production
+- `npm run serve` - Preview production build
+- `npm run format` - Format code with Biome
+- `npm run lint` - Lint code with Biome
+- `npm run check` - Run Biome checks
 
-### Using A Layout
+## 🌈 Color Palette
 
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
+- **Primary Blue**: `#2E8BC0` - Main brand color
+- **Teal**: `#2EC4B6` - Secondary accent
+- **Coral**: `#FF6F61` - Attention/warning
+- **Yellow**: `#FFD447` - Rewards/points
+- **Light Blue**: `#E3F5FF` - Backgrounds
+- **Light Gray**: `#F5F7FA` - Neutral backgrounds
+- **Dark Gray**: `#1B262C` - Primary text
+- **Medium Gray**: `#7D8B91` - Secondary text
 
-Here is an example layout that includes a header:
+## 🎓 Learning Modules
 
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+The platform includes various learning modules covering:
 
-import { Link } from "@tanstack/react-router";
+1. **What is Money?** - Understanding currency and value
+2. **Saving vs Spending** - Financial decision-making
+3. **Introduction to Stocks** - Equity investments basics
+4. **Understanding Risk** - Risk-reward relationship
+5. **Building a Portfolio** - Diversification strategies
+6. **Compound Interest Magic** - Long-term growth concepts
 
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
+## 🏆 Achievement System
 
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
+Children can unlock achievements by:
+- Completing learning modules
+- Building their portfolio
+- Reaching savings milestones
+- Scoring well on quizzes
+- Consistent engagement
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+## 🔐 Authentication
 
+The app uses a simple context-based authentication system. In production, this should be replaced with a proper authentication service (e.g., Auth0, Clerk, Supabase Auth).
 
-## Data Fetching
+## 📱 Responsive Design
 
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
+Aspire is fully responsive and works seamlessly on:
+- Desktop computers
+- Tablets
+- Mobile phones
 
-For example:
+## 🚧 Future Enhancements
 
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/people",
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
-```
+- Real-time investment data integration
+- Parent-child messaging system
+- More interactive quizzes and games
+- Social features (friend leaderboards)
+- Mobile app versions
+- Multi-language support
+- Database integration
+- Real authentication system
+- Email notifications
 
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
+## 📄 License
 
-### React-Query
+This project is for educational purposes.
 
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
+## 🤝 Contributing
 
-First add your dependencies:
+Contributions are welcome! Please feel free to submit issues or pull requests.
 
-```bash
-bun install @tanstack/react-query @tanstack/react-query-devtools
-```
+## 👨‍💻 Development Notes
 
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
+- The app uses dummy data from `src/data/dummyData.ts`
+- Authentication is simplified for demo purposes
+- All state is managed in-memory (no persistence)
+- Routes are automatically generated by TanStack Router
+- Base UI components provide accessible foundations
 
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+## 🙏 Acknowledgments
 
-// ...
+- Built with [TanStack Start](https://tanstack.com/start)
+- UI components from [Base UI](https://base-ui.netlify.app/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Icons using emoji for simplicity and fun
 
-const queryClient = new QueryClient();
+---
 
-// ...
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
-```
-
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from "@tanstack/react-query";
-
-import "./App.css";
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      fetch("https://swapi.dev/api/people")
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
-
-```bash
-bun install @tanstack/store
-```
-
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
-
-export default App;
-```
-
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
-
-Let's check this out by doubling the count using derived state.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store, Derived } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
-
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
-
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
-
-export default App;
-```
-
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
-
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
-
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+Made with ❤️ for teaching kids about financial literacy

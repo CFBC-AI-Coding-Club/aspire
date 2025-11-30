@@ -1,14 +1,14 @@
 import { defineConfig } from "vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
+// import viteReact from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 import { nitro } from "nitro/vite";
 
-const ReactCompilerConfig = {
-  /* ... */
-};
+// const ReactCompilerConfig = {
+//   /* ... */
+// };
 
 const config = defineConfig({
   plugins: [
@@ -20,11 +20,11 @@ const config = defineConfig({
     }),
     tailwindcss(),
     tanstackStart(),
-    viteReact({
-      babel: {
-        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
-      },
-    }),
+    // viteReact({
+    //   babel: {
+    //     plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
+    //   },
+    // }),
   ],
 });
 
