@@ -1,0 +1,246 @@
+// This defines the data structure for the market simulation game.
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+  runtime  = "bun"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- Enums for Fixed Values ---
+
+enum Role {
+  ADMIN
+  PARENT
+  CHILD
+}
+
+enum TransactionType {
+  BUY
+  SELL
+}
+
+enum NotificationType {
+  INFO
+  WARNING
+  ACHIEVEMENT
+}
+
+enum Sentiment {
+  POSITIVE
+  NEGATIVE
+  NEUTRAL
+}
+
+// --- Better Auth Tables ---
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("session")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  accountId         String
+  providerId        String
+  accessToken       String? @db.Text
+  refreshToken      String? @db.Text
+  idToken           String? @db.Text
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope             String?
+  password          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+  @@index([identifier])
+  @@map("verification")
+}
+
+// --- Core Models ---
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  emailVerified Boolean @default(false)
+  name     String
+  role     Role @default(PARENT) // Default role, can be updated after registration
+
+  // Parent/Child Relation (Single Table Inheritance)
+  parentId String?
+  parent   User?   @relation("Family", fields: [parentId], references: [id])
+  children User[]  @relation("Family")
+
+  // Game Data
+  balance Float @default(10000.00) // Starting balance in EC
+  xp      Int   @default(0)
+  
+  // Metadata
+  isActive Boolean @default(true)
+  lastLogin DateTime?
+
+  // Better Auth relations
+  sessions Session[]
+  accounts Account[]
+
+  portfolio     PortfolioItem[]
+  transactions  Transaction[]
+  notifications Notification[]
+  attempts      Attempt[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("user")
+}
+
+model Stock {
+  id          String  @id @default(uuid())
+  ticker      String  @unique // e.g. SKNB
+  name        String
+  sector      String // BANKING, TELECOM, UTILITIES (Use consistent UPPERCASE)
+  price       Float // Current price
+  change      Float @default(0.00) // Price change from previous day
+  volume      Int @default(0) // Trading volume
+  volatility  Float // 0.05 (Stable) to 0.3 (Volatile)
+  description String?
+  lastTradeDate DateTime? // Last trade date
+  isActive    Boolean @default(true) // Whether stock is actively traded
+
+  // Relationship to the Price History model
+  history StockPrice[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// --- NEW MODEL FOR PRICE HISTORY ---
+model StockPrice {
+  id          String   @id @default(uuid())
+  stockTicker String // Foreign Key
+  price       Float // Price at the moment of snapshot
+  timestamp   DateTime @default(now())
+
+  // Relationship
+  stock Stock @relation(fields: [stockTicker], references: [ticker], onDelete: Cascade)
+
+  // Index for efficient historical querying
+  @@index([stockTicker, timestamp])
+}
+
+// --- Market Models ---
+
+model PortfolioItem {
+  id       String @id @default(uuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+  ticker   String
+  quantity Int
+  avgPrice Float
+
+  @@unique([userId, ticker]) // A user can only hold one entry per stock ticker
+}
+
+model Transaction {
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
+  ticker    String
+  type      TransactionType // Using Enum: BUY or SELL
+  quantity  Int
+  price     Float
+  total     Float
+  timestamp DateTime        @default(now())
+  
+  @@index([userId, timestamp])
+  @@index([ticker, timestamp])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  message   String
+  type      NotificationType // Using Enum: INFO, WARNING, ACHIEVEMENT
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+}
+
+model NewsEvent {
+  id        String    @id @default(uuid())
+  headline  String
+  summary   String? // Made optional (String?) for flexibility
+  sector    String
+  magnitude Float
+  duration  Int
+  sentiment Sentiment // Using Enum: POSITIVE, NEGATIVE, NEUTRAL
+  createdAt DateTime  @default(now())
+
+  @@map("NewsEvent")
+}
+
+// --- Quiz Models ---
+
+model Quiz {
+  id         String     @id @default(uuid())
+  topic      String // e.g., "Compound Interest"
+  title      String
+  difficulty Int // 1 (Beginner) to 3 (Advanced)
+  questions  Question[]
+}
+
+model Question {
+  id          String @id @default(uuid())
+  quizId      String
+  quiz        Quiz   @relation(fields: [quizId], references: [id])
+  text        String
+  explanation String
+  xpReward    Int
+  options     Json // [{ text: "A", isCorrect: true }, ...]
+
+  // Tracking user progress
+  userAttempts Attempt[]
+}
+
+model Attempt {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  questionId   String
+  question     Question @relation(fields: [questionId], references: [id])
+  isCorrect    Boolean
+  answerChoice Json // The option the user selected
+  createdAt    DateTime @default(now())
+}
