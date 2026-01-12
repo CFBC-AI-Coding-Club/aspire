@@ -3,5 +3,5 @@ WORKDIR /app
 COPY . .
 RUN bun install
 RUN bunx prisma generate
-EXPOSE 3000
+EXPOSE 5491
 CMD ["bun", "run", "src/index.ts"]

@@ -12,7 +12,7 @@ services:
   api:
     build: .
     ports:
-      - "3000:3000"
+      - "5491:5491"
     environment:
       DATABASE_URL: postgres://user:password@db:5432/aspire_db
       JWT_SECRET: secret

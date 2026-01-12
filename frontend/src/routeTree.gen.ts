@@ -9,39 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RawrRouteImport } from './routes/rawr'
-import { Route as PortfolioRouteImport } from './routes/portfolio'
-import { Route as LearnRouteImport } from './routes/learn'
-import { Route as HomeRouteImport } from './routes/home'
-import { Route as AchievementsRouteImport } from './routes/achievements'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ParentDashboardRouteImport } from './routes/parent/dashboard'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AppProfileRouteImport } from './routes/_app/profile'
+import { Route as AppPortfolioRouteImport } from './routes/_app/portfolio'
+import { Route as AppMarketRouteImport } from './routes/_app/market'
+import { Route as AppLeaderboardRouteImport } from './routes/_app/leaderboard'
+import { Route as AppGuidesRouteImport } from './routes/_app/guides'
+import { Route as AppGamesRouteImport } from './routes/_app/games'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppCreateStockRouteImport } from './routes/_app/create-stock'
+import { Route as AppGuidesGuideIdRouteImport } from './routes/_app/guides/$guideId'
 
-const RawrRoute = RawrRouteImport.update({
-  id: '/rawr',
-  path: '/rawr',
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortfolioRoute = PortfolioRouteImport.update({
-  id: '/portfolio',
-  path: '/portfolio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LearnRoute = LearnRouteImport.update({
-  id: '/learn',
-  path: '/learn',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AchievementsRoute = AchievementsRouteImport.update({
-  id: '/achievements',
-  path: '/achievements',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -49,139 +37,174 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ParentDashboardRoute = ParentDashboardRouteImport.update({
-  id: '/parent/dashboard',
-  path: '/parent/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthSignupRoute = AuthSignupRouteImport.update({
-  id: '/_auth/signup',
+  id: '/signup',
   path: '/signup',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/_auth/login',
+  id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPortfolioRoute = AppPortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMarketRoute = AppMarketRouteImport.update({
+  id: '/market',
+  path: '/market',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeaderboardRoute = AppLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGuidesRoute = AppGuidesRouteImport.update({
+  id: '/guides',
+  path: '/guides',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGamesRoute = AppGamesRouteImport.update({
+  id: '/games',
+  path: '/games',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCreateStockRoute = AppCreateStockRouteImport.update({
+  id: '/create-stock',
+  path: '/create-stock',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGuidesGuideIdRoute = AppGuidesGuideIdRouteImport.update({
+  id: '/$guideId',
+  path: '/$guideId',
+  getParentRoute: () => AppGuidesRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/achievements': typeof AchievementsRoute
-  '/home': typeof HomeRoute
-  '/learn': typeof LearnRoute
-  '/portfolio': typeof PortfolioRoute
-  '/rawr': typeof RawrRoute
+  '/create-stock': typeof AppCreateStockRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/games': typeof AppGamesRoute
+  '/guides': typeof AppGuidesRouteWithChildren
+  '/leaderboard': typeof AppLeaderboardRoute
+  '/market': typeof AppMarketRoute
+  '/portfolio': typeof AppPortfolioRoute
+  '/profile': typeof AppProfileRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
-  '/parent/dashboard': typeof ParentDashboardRoute
+  '/guides/$guideId': typeof AppGuidesGuideIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/achievements': typeof AchievementsRoute
-  '/home': typeof HomeRoute
-  '/learn': typeof LearnRoute
-  '/portfolio': typeof PortfolioRoute
-  '/rawr': typeof RawrRoute
+  '/create-stock': typeof AppCreateStockRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/games': typeof AppGamesRoute
+  '/guides': typeof AppGuidesRouteWithChildren
+  '/leaderboard': typeof AppLeaderboardRoute
+  '/market': typeof AppMarketRoute
+  '/portfolio': typeof AppPortfolioRoute
+  '/profile': typeof AppProfileRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
-  '/parent/dashboard': typeof ParentDashboardRoute
+  '/guides/$guideId': typeof AppGuidesGuideIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/achievements': typeof AchievementsRoute
-  '/home': typeof HomeRoute
-  '/learn': typeof LearnRoute
-  '/portfolio': typeof PortfolioRoute
-  '/rawr': typeof RawrRoute
+  '/_app': typeof AppRouteWithChildren
+  '/_auth': typeof AuthRouteWithChildren
+  '/_app/create-stock': typeof AppCreateStockRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/games': typeof AppGamesRoute
+  '/_app/guides': typeof AppGuidesRouteWithChildren
+  '/_app/leaderboard': typeof AppLeaderboardRoute
+  '/_app/market': typeof AppMarketRoute
+  '/_app/portfolio': typeof AppPortfolioRoute
+  '/_app/profile': typeof AppProfileRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
-  '/parent/dashboard': typeof ParentDashboardRoute
+  '/_app/guides/$guideId': typeof AppGuidesGuideIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/achievements'
-    | '/home'
-    | '/learn'
+    | '/create-stock'
+    | '/dashboard'
+    | '/games'
+    | '/guides'
+    | '/leaderboard'
+    | '/market'
     | '/portfolio'
-    | '/rawr'
+    | '/profile'
     | '/login'
     | '/signup'
-    | '/parent/dashboard'
+    | '/guides/$guideId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/achievements'
-    | '/home'
-    | '/learn'
+    | '/create-stock'
+    | '/dashboard'
+    | '/games'
+    | '/guides'
+    | '/leaderboard'
+    | '/market'
     | '/portfolio'
-    | '/rawr'
+    | '/profile'
     | '/login'
     | '/signup'
-    | '/parent/dashboard'
+    | '/guides/$guideId'
   id:
     | '__root__'
     | '/'
-    | '/achievements'
-    | '/home'
-    | '/learn'
-    | '/portfolio'
-    | '/rawr'
+    | '/_app'
+    | '/_auth'
+    | '/_app/create-stock'
+    | '/_app/dashboard'
+    | '/_app/games'
+    | '/_app/guides'
+    | '/_app/leaderboard'
+    | '/_app/market'
+    | '/_app/portfolio'
+    | '/_app/profile'
     | '/_auth/login'
     | '/_auth/signup'
-    | '/parent/dashboard'
+    | '/_app/guides/$guideId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AchievementsRoute: typeof AchievementsRoute
-  HomeRoute: typeof HomeRoute
-  LearnRoute: typeof LearnRoute
-  PortfolioRoute: typeof PortfolioRoute
-  RawrRoute: typeof RawrRoute
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthSignupRoute: typeof AuthSignupRoute
-  ParentDashboardRoute: typeof ParentDashboardRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/rawr': {
-      id: '/rawr'
-      path: '/rawr'
-      fullPath: '/rawr'
-      preLoaderRoute: typeof RawrRouteImport
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portfolio': {
-      id: '/portfolio'
-      path: '/portfolio'
-      fullPath: '/portfolio'
-      preLoaderRoute: typeof PortfolioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/learn': {
-      id: '/learn'
-      path: '/learn'
-      fullPath: '/learn'
-      preLoaderRoute: typeof LearnRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/achievements': {
-      id: '/achievements'
-      path: '/achievements'
-      fullPath: '/achievements'
-      preLoaderRoute: typeof AchievementsRouteImport
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -191,50 +214,139 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/parent/dashboard': {
-      id: '/parent/dashboard'
-      path: '/parent/dashboard'
-      fullPath: '/parent/dashboard'
-      preLoaderRoute: typeof ParentDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_auth/signup': {
       id: '/_auth/signup'
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof AuthSignupRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/portfolio': {
+      id: '/_app/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof AppPortfolioRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/market': {
+      id: '/_app/market'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof AppMarketRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/leaderboard': {
+      id: '/_app/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AppLeaderboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/guides': {
+      id: '/_app/guides'
+      path: '/guides'
+      fullPath: '/guides'
+      preLoaderRoute: typeof AppGuidesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/games': {
+      id: '/_app/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof AppGamesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/create-stock': {
+      id: '/_app/create-stock'
+      path: '/create-stock'
+      fullPath: '/create-stock'
+      preLoaderRoute: typeof AppCreateStockRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/guides/$guideId': {
+      id: '/_app/guides/$guideId'
+      path: '/$guideId'
+      fullPath: '/guides/$guideId'
+      preLoaderRoute: typeof AppGuidesGuideIdRouteImport
+      parentRoute: typeof AppGuidesRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AchievementsRoute: AchievementsRoute,
-  HomeRoute: HomeRoute,
-  LearnRoute: LearnRoute,
-  PortfolioRoute: PortfolioRoute,
-  RawrRoute: RawrRoute,
+interface AppGuidesRouteChildren {
+  AppGuidesGuideIdRoute: typeof AppGuidesGuideIdRoute
+}
+
+const AppGuidesRouteChildren: AppGuidesRouteChildren = {
+  AppGuidesGuideIdRoute: AppGuidesGuideIdRoute,
+}
+
+const AppGuidesRouteWithChildren = AppGuidesRoute._addFileChildren(
+  AppGuidesRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppCreateStockRoute: typeof AppCreateStockRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppGamesRoute: typeof AppGamesRoute
+  AppGuidesRoute: typeof AppGuidesRouteWithChildren
+  AppLeaderboardRoute: typeof AppLeaderboardRoute
+  AppMarketRoute: typeof AppMarketRoute
+  AppPortfolioRoute: typeof AppPortfolioRoute
+  AppProfileRoute: typeof AppProfileRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppCreateStockRoute: AppCreateStockRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppGamesRoute: AppGamesRoute,
+  AppGuidesRoute: AppGuidesRouteWithChildren,
+  AppLeaderboardRoute: AppLeaderboardRoute,
+  AppMarketRoute: AppMarketRoute,
+  AppPortfolioRoute: AppPortfolioRoute,
+  AppProfileRoute: AppProfileRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
+interface AuthRouteChildren {
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
-  ParentDashboardRoute: ParentDashboardRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

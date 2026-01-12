@@ -1,4 +1,3 @@
-// src/index.ts - Fixed WebSocket integration
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
@@ -42,7 +41,11 @@ export function broadcast(type: string, data: any) {
 
   for (const [client, user] of clients.entries()) {
     try {
-      if (type === "STOCK_UPDATE" && user.subscriptions && user.subscriptions.length > 0) {
+      if (
+        type === "STOCK_UPDATE" &&
+        user.subscriptions &&
+        user.subscriptions.length > 0
+      ) {
         if (data.ticker && user.subscriptions.includes(data.ticker)) {
           client.send(msg);
         }
@@ -78,43 +81,24 @@ export function broadcastToUser(userId: string, type: string, data: any) {
 
 export const app = new Hono();
 
-// Global middleware - MUST run before auth routes
 app.use("*", logger());
-app.use("*", cors());
+app.use(
+  "*",
+  cors({
+    origin: ["http://localhost:7823", "http://localhost:5491"],
+    credentials: true,
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
-// Better-auth routes - handle /api/auth/* requests
-// Better-Auth expects internal paths like /sign-up/email, not /api/auth/sign-up/email
-app.use("*", async (c, next) => {
-  const url = new URL(c.req.url);
-  
-  // Only handle /api/auth/* requests
-  if (url.pathname.startsWith("/api/auth")) {
-    try {
-      // Better-Auth with basePath="/api/auth" expects the full path
-      // But internally it strips basePath, so we need to pass the full URL
-      // The handler will match routes based on basePath configuration
-      const response = await auth.handler(c.req.raw);
-      
-      if (response) {
-        return response;
-      }
-      
-      // If no response, continue (will 404)
-    } catch (error) {
-      console.error("Better-auth handler error:", error);
-      return c.json({ error: "Internal server error" }, 500);
-    }
-  }
-  
-  // Continue to next middleware/route for non-auth paths
-  await next();
-});
+app.on(["POST", "GET", "OPTIONS"], "/api/auth/*", (c) =>
+  auth.handler(c.req.raw),
+);
 
 app.route("/api", apiRouter);
 
-app.get("/", (c) =>
-  c.json({ status: "Aspire Backend Online 🐱" }),
-);
+app.get("/", (c) => c.json({ status: "Aspire Backend Online 🐱" }));
 
 // Background jobs
 startPriceSimulation();
@@ -123,21 +107,21 @@ startPriceCleanup();
 // Initialize Redis on startup
 initializeRedisSubscriptions();
 
-
 export default {
-  port: process.env.PORT || 3000,
-  
+  port: process.env.PORT || 5491,
+
   // Main fetch handler - handles both HTTP and WebSocket upgrades
   async fetch(req: Request, server: any) {
     const url = new URL(req.url);
-    
+
     const upgradeHeader = req.headers.get("upgrade");
     if (upgradeHeader === "websocket") {
       console.log("WebSocket upgrade request received");
-      
-      const token = url.searchParams.get("token") || 
-                    req.headers.get("authorization")?.replace("Bearer ", "");
-      
+
+      const token =
+        url.searchParams.get("token") ||
+        req.headers.get("authorization")?.replace("Bearer ", "");
+
       let user: WebSocketUser = {
         id: "anonymous",
         role: "GUEST",
@@ -173,10 +157,10 @@ export default {
       if (success) {
         return undefined;
       }
-      
+
       return new Response("WebSocket upgrade failed", { status: 500 });
     }
-    
+
     return app.fetch(req, server);
   },
 
@@ -212,7 +196,6 @@ export default {
           return;
         }
 
-
         if (parsed.type === "SUBSCRIBE" && parsed.tickers) {
           const user = clients.get(ws);
           if (user) {
@@ -223,7 +206,9 @@ export default {
               timestamp: new Date().toISOString(),
             };
             ws.send(JSON.stringify(response));
-            console.log(`User ${user.id} subscribed to: ${parsed.tickers.join(", ")}`);
+            console.log(
+              `User ${user.id} subscribed to: ${parsed.tickers.join(", ")}`,
+            );
           }
         }
       } catch (error) {

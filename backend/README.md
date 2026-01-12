@@ -19,5 +19,5 @@ bun test
 
 open: 
 ```sh
- http://localhost:3000
+ http://localhost:5491
 ```

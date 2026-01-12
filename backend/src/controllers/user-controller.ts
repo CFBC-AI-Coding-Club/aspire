@@ -18,6 +18,44 @@ export const getProfile = async (c: Context) => {
 	return c.json(user);
 };
 
+export const getUserById = async (c: Context) => {
+	const authUser = c.get("user");
+	const userId = c.req.param("id");
+
+	// Only allow users to get their own profile
+	if (userId !== authUser.id) {
+		return c.json({ error: "Unauthorized" }, 403);
+	}
+
+	const user = await db.user.findUnique({
+		where: { id: userId },
+		select: {
+			id: true,
+			email: true,
+			name: true,
+			role: true,
+			balance: true,
+			xp: true,
+			parentId: true,
+			children: {
+				select: {
+					id: true,
+					name: true,
+					email: true,
+				},
+			},
+			createdAt: true,
+			lastLogin: true,
+		},
+	});
+
+	if (!user) {
+		return c.json({ error: "User not found" }, 404);
+	}
+
+	return c.json(user);
+};
+
 export const getChildren = async (c: Context) => {
 	const authUser = c.get("user");
 	if (authUser.role !== Role.PARENT) {

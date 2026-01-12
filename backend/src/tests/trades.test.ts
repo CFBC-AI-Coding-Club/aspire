@@ -48,7 +48,7 @@ describe('Trade API', () => {
         const userAuth = await registerUser(userEmail, 'password123', 'Trade Tester', Role.PARENT);
         authToken = userAuth.cookies;
         console.log('Trade API setup complete');
-    }, 30000); // Increase timeout to 30 seconds for setup
+    }, 54910); // Increase timeout to 30 seconds for setup
 
     describe('POST /api/trades', () => {
         test('should fail to make a trade without authentication', async () => {

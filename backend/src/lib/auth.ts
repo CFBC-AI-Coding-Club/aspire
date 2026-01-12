@@ -1,24 +1,22 @@
 import { betterAuth } from "better-auth";
-import { Pool } from "pg";
-
-const DATABASE_URL = process.env.DATABASE_URL;
-if (!DATABASE_URL) {
-  throw new Error("DATABASE_URL is not set");
-}
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { prisma } from "../db/prisma";
 
 export const auth = betterAuth({
-  database: new Pool({
-    connectionString: DATABASE_URL,
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
   }),
   emailAndPassword: {
     enabled: true,
   },
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
-  basePath: "/api/auth", // This tells Better-Auth what prefix to expect
-  // Customize session handling
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:5491",
+  basePath: "/api/auth",
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
   },
+  trustedOrigins: [
+    "http://localhost:7823",
+    "http://localhost:5491",
+  ],
 });
-

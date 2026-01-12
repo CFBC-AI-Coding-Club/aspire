@@ -62,9 +62,9 @@ print_info "Starting Frontend (Port: 3001)..."
 cd "$SCRIPT_DIR/frontend"
 if [ ! -d "node_modules" ]; then
     print_warning "Frontend dependencies not found. Installing..."
-    npm install
+    bun install
 fi
-npm run dev > >(sed "s/^/$(echo -e ${MAGENTA})[FRONTEND]$(echo -e ${NC}) /") 2>&1 &
+bun run dev > >(sed "s/^/$(echo -e ${MAGENTA})[FRONTEND]$(echo -e ${NC}) /") 2>&1 &
 FRONTEND_PID=$!
 PIDS+=($FRONTEND_PID)
 print_success "Frontend started (PID: $FRONTEND_PID)"
