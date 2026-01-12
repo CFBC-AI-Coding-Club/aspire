@@ -17,27 +17,18 @@ export const Route = createFileRoute("/_app/guides")({
 	component: GuidesPage,
 });
 
-// Progress mock - in real app, track user progress
-const userProgress: Record<string, { completed: boolean; progress: number }> = {
-	"what-is-investing": { completed: true, progress: 100 },
-	"understanding-stocks": { completed: true, progress: 100 },
-	"reading-stock-charts": { completed: false, progress: 60 },
-	diversification: { completed: false, progress: 30 },
-	"understanding-risk": { completed: false, progress: 0 },
-	"buy-and-hold": { completed: false, progress: 0 },
-	"market-cycles": { completed: false, progress: 0 },
-	"compound-interest": { completed: false, progress: 0 },
-};
+// Progress - will be fetched from API in real app
+const userProgress: Record<string, { completed: boolean; progress: number }> = {};
 
 // Difficulty Badge
 function DifficultyBadge({ difficulty }: { difficulty: Guide["difficulty"] }) {
 	const config = {
-		beginner: { label: "Beginner", color: "bg-[#22C55E]/10 text-[#22C55E]" },
+		beginner: { label: "Beginner", color: "bg-[#16a34a]/10 text-[#16a34a]" },
 		intermediate: {
 			label: "Intermediate",
-			color: "bg-[#FBBF24]/10 text-[#FBBF24]",
+			color: "bg-[#c22f99]/10 text-[#c22f99]",
 		},
-		advanced: { label: "Advanced", color: "bg-[#EF4444]/10 text-[#EF4444]" },
+		advanced: { label: "Advanced", color: "bg-[#dc2626]/10 text-[#dc2626]" },
 	}[difficulty];
 
 	return (
@@ -57,16 +48,16 @@ function GuideCard({ guide }: { guide: Guide }) {
 		<Link to={`/guides/${guide.id}`}>
 			<Card hover className="h-full group">
 				<div className="flex items-start justify-between mb-4">
-					<div className="w-14 h-14 rounded-2xl bg-[#2a2a2a] flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+					<div className="w-14 h-14 rounded-2xl bg-[#482977]/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
 						{guide.icon}
 					</div>
 					<DifficultyBadge difficulty={guide.difficulty} />
 				</div>
 
-				<h3 className="font-semibold text-white text-lg mb-2 group-hover:text-[#60A5FA] transition-colors">
+				<h3 className="font-semibold text-[#1a1a2e] text-lg mb-2 group-hover:text-[#482977] transition-colors">
 					{guide.title}
 				</h3>
-				<p className="text-[#6a6a6a] text-sm mb-4 line-clamp-2">
+				<p className="text-[#7a8aa3] text-sm mb-4 line-clamp-2">
 					{guide.description}
 				</p>
 
@@ -74,12 +65,12 @@ function GuideCard({ guide }: { guide: Guide }) {
 				{progress.progress > 0 && !progress.completed && (
 					<div className="mb-4">
 						<div className="flex items-center justify-between text-sm mb-1">
-							<span className="text-[#6a6a6a]">Progress</span>
-							<span className="text-[#60A5FA]">{progress.progress}%</span>
+							<span className="text-[#7a8aa3]">Progress</span>
+							<span className="text-[#482977]">{progress.progress}%</span>
 						</div>
-						<div className="h-2 bg-[#2a2a2a] rounded-full overflow-hidden">
+						<div className="h-2 bg-[#f1f3f9] rounded-full overflow-hidden">
 							<div
-								className="h-full bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] rounded-full transition-all"
+								className="h-full bg-gradient-to-r from-[#482977] to-[#6b42a1] rounded-full transition-all"
 								style={{ width: `${progress.progress}%` }}
 							/>
 						</div>
@@ -87,18 +78,18 @@ function GuideCard({ guide }: { guide: Guide }) {
 				)}
 
 				<div className="flex items-center justify-between mt-auto">
-					<div className="flex items-center gap-2 text-[#6a6a6a]">
+					<div className="flex items-center gap-2 text-[#7a8aa3]">
 						<Clock className="w-4 h-4" />
 						<span className="text-sm">{guide.duration}</span>
 					</div>
 
 					{progress.completed ? (
-						<div className="flex items-center gap-1 text-[#22C55E]">
+						<div className="flex items-center gap-1 text-[#16a34a]">
 							<CheckCircle className="w-4 h-4" />
 							<span className="text-sm font-medium">Completed</span>
 						</div>
 					) : (
-						<div className="flex items-center gap-1 text-[#60A5FA] group-hover:gap-2 transition-all">
+						<div className="flex items-center gap-1 text-[#482977] group-hover:gap-2 transition-all">
 							<span className="text-sm font-medium">
 								{progress.progress > 0 ? "Continue" : "Start"}
 							</span>
@@ -122,13 +113,13 @@ function CategorySection({
 	return (
 		<section>
 			<div className="flex items-center gap-3 mb-6">
-				<div className="w-10 h-10 rounded-xl bg-[#2a2a2a] flex items-center justify-center text-xl">
+				<div className="w-10 h-10 rounded-xl bg-[#482977]/10 flex items-center justify-center text-xl">
 					{categoryIcons[category]}
 				</div>
-				<h2 className="text-xl font-bold text-white">
+				<h2 className="text-xl font-bold text-[#1a1a2e]">
 					{categoryLabels[category]}
 				</h2>
-				<span className="px-2 py-1 rounded-lg bg-[#2a2a2a] text-[#6a6a6a] text-sm">
+				<span className="px-2 py-1 rounded-lg bg-[#f1f3f9] text-[#7a8aa3] text-sm">
 					{guides.length} guides
 				</span>
 			</div>
@@ -188,39 +179,39 @@ function GuidesPage() {
 			{/* Header */}
 			<div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
 				<div>
-					<h1 className="text-3xl font-bold text-white mb-1">
+					<h1 className="text-3xl font-bold text-[#1a1a2e] mb-1">
 						Learning Guides
 					</h1>
-					<p className="text-[#6a6a6a]">
+					<p className="text-[#7a8aa3]">
 						Master investing with our comprehensive guides
 					</p>
 				</div>
 			</div>
 
 			{/* Progress Card */}
-			<Card className="bg-gradient-to-r from-[#3B82F6]/10 to-[#2563EB]/5 border-[#3B82F6]/30">
+			<Card className="bg-gradient-to-r from-[#482977]/5 to-[#6b42a1]/5 border-[#482977]/20">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-6">
-						<div className="w-20 h-20 rounded-2xl bg-[#3B82F6]/20 flex items-center justify-center">
-							<BookOpen className="w-10 h-10 text-[#60A5FA]" />
+						<div className="w-20 h-20 rounded-2xl bg-[#482977]/10 flex items-center justify-center">
+							<BookOpen className="w-10 h-10 text-[#482977]" />
 						</div>
 						<div>
-							<p className="text-[#6a6a6a] mb-1">Your Learning Progress</p>
-							<p className="text-3xl font-bold text-white">
+							<p className="text-[#7a8aa3] mb-1">Your Learning Progress</p>
+							<p className="text-3xl font-bold text-[#1a1a2e]">
 								{completedCount} / {totalGuides} Guides
 							</p>
 						</div>
 					</div>
 					<div className="hidden md:block w-48">
 						<div className="flex items-center justify-between text-sm mb-2">
-							<span className="text-[#6a6a6a]">Overall</span>
-							<span className="text-[#60A5FA] font-medium">
+							<span className="text-[#7a8aa3]">Overall</span>
+							<span className="text-[#482977] font-medium">
 								{overallProgress}%
 							</span>
 						</div>
-						<div className="h-3 bg-[#1a1a1a] rounded-full overflow-hidden">
+						<div className="h-3 bg-white rounded-full overflow-hidden">
 							<div
-								className="h-full bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] rounded-full transition-all duration-500"
+								className="h-full bg-gradient-to-r from-[#482977] to-[#6b42a1] rounded-full transition-all duration-500"
 								style={{ width: `${overallProgress}%` }}
 							/>
 						</div>
@@ -245,8 +236,8 @@ function GuidesPage() {
 							className={clsx(
 								"px-4 py-2 rounded-xl text-sm font-medium transition-colors",
 								selectedCategory === "all"
-									? "bg-[#3B82F6] text-white"
-									: "bg-[#1a1a1a] text-[#6a6a6a] hover:text-white",
+									? "bg-[#482977] text-white"
+									: "bg-[#f1f3f9] text-[#7a8aa3] hover:text-[#1a1a2e]",
 							)}
 						>
 							All
@@ -258,8 +249,8 @@ function GuidesPage() {
 								className={clsx(
 									"px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2",
 									selectedCategory === category
-										? "bg-[#3B82F6] text-white"
-										: "bg-[#1a1a1a] text-[#6a6a6a] hover:text-white",
+										? "bg-[#482977] text-white"
+										: "bg-[#f1f3f9] text-[#7a8aa3] hover:text-[#1a1a2e]",
 								)}
 							>
 								<span>{categoryIcons[category]}</span>
@@ -271,7 +262,7 @@ function GuidesPage() {
 			</Card>
 
 			{/* Results Count */}
-			<p className="text-sm text-[#6a6a6a]">
+			<p className="text-sm text-[#7a8aa3]">
 				Showing {filteredGuides.length} of {totalGuides} guides
 			</p>
 
@@ -298,10 +289,10 @@ function GuidesPage() {
 			{filteredGuides.length === 0 && (
 				<Card className="py-12 text-center">
 					<div className="text-4xl mb-4">📚</div>
-					<h3 className="text-xl font-semibold text-white mb-2">
+					<h3 className="text-xl font-semibold text-[#1a1a2e] mb-2">
 						No guides found
 					</h3>
-					<p className="text-[#6a6a6a]">Try adjusting your search or filters</p>
+					<p className="text-[#7a8aa3]">Try adjusting your search or filters</p>
 				</Card>
 			)}
 		</div>

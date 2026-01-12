@@ -44,13 +44,8 @@ export async function apiFetch<T = any>(
 
 // Stocks API
 export const stocksAPI = {
-  getAll: (active?: boolean) => {
-    const params = new URLSearchParams();
-    if (active !== undefined) {
-      params.append("active", String(active));
-    }
-    const query = params.toString() ? `?${params.toString()}` : "";
-    return apiFetch(`/stocks${query}`);
+  getAll: () => {
+    return apiFetch(`/stocks`);
   },
 
   getByTicker: (ticker: string) => {
@@ -127,5 +122,12 @@ export const tradesAPI = {
       method: "POST",
       body: JSON.stringify(data),
     });
+  },
+};
+
+// Leaderboard API
+export const leaderboardAPI = {
+  getAll: () => {
+    return apiFetch("/leaderboard");
   },
 };

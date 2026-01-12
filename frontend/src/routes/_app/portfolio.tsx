@@ -86,32 +86,32 @@ function HoldingRow({
   const isPositive = gainLossPercent >= 0;
 
   return (
-    <tr className="border-b border-[#1a1a1a] hover:bg-[#121212] transition-colors">
+    <tr className="border-b border-[#482977]/5 hover:bg-[#f8f9fc] transition-colors">
       <td className="py-4 px-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-[#2a2a2a] flex items-center justify-center font-bold text-white">
+          <div className="w-10 h-10 rounded-lg bg-[#482977]/10 flex items-center justify-center font-bold text-[#482977]">
             {holding.ticker.slice(0, 2)}
           </div>
           <div>
-            <p className="font-semibold text-white">{holding.ticker}</p>
+            <p className="font-semibold text-[#1a1a2e]">{holding.ticker}</p>
           </div>
         </div>
       </td>
       <td className="py-4 px-4">
-        <p className="text-white font-mono">{holding.quantity}</p>
+        <p className="text-[#1a1a2e] font-mono">{holding.quantity}</p>
       </td>
       <td className="py-4 px-4 hidden md:table-cell">
-        <p className="text-[#9a9a9a] font-mono">
+        <p className="text-[#566279] font-mono">
           {formatCurrency(holding.avgPrice)}
         </p>
       </td>
       <td className="py-4 px-4">
-        <p className="text-white font-mono">
+        <p className="text-[#1a1a2e] font-mono">
           {formatCurrency(currentPrice)}
         </p>
       </td>
       <td className="py-4 px-4">
-        <p className="text-white font-semibold font-mono">
+        <p className="text-[#1a1a2e] font-semibold font-mono">
           {formatCurrency(totalValue)}
         </p>
       </td>
@@ -120,8 +120,8 @@ function HoldingRow({
           className={clsx(
             "inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm font-medium",
             isPositive
-              ? "bg-[#22C55E]/10 text-[#22C55E]"
-              : "bg-[#EF4444]/10 text-[#EF4444]",
+              ? "bg-[#16a34a]/10 text-[#16a34a]"
+              : "bg-[#dc2626]/10 text-[#dc2626]",
           )}
         >
           {isPositive ? (
@@ -148,12 +148,12 @@ function HoldingRow({
 
 // Pie chart colors
 const COLORS = [
-  "#3B82F6",
-  "#22C55E",
-  "#FBBF24",
-  "#EF4444",
-  "#8B5CF6",
-  "#EC4899",
+  "#482977",
+  "#16a34a",
+  "#c22f99",
+  "#dc2626",
+  "#6b42a1",
+  "#d94db3",
 ];
 
 function PortfolioPage() {
@@ -216,16 +216,6 @@ function PortfolioPage() {
     color: COLORS[i % COLORS.length],
   }));
 
-  // Calculate monthly performance for bar chart
-  const monthlyPerformance = [
-    { month: "Jul", return: 5.2 },
-    { month: "Aug", return: -2.1 },
-    { month: "Sep", return: 8.4 },
-    { month: "Oct", return: 3.7 },
-    { month: "Nov", return: -1.5 },
-    { month: "Dec", return: 6.8 },
-  ];
-
   const isPortfolioPositive = portfolioData.totalReturnPercent >= 0;
   const currentValue = portfolioData.totalValue + (userProfile?.balance || 0);
   const todayChange =
@@ -240,8 +230,8 @@ function PortfolioPage() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-1">Portfolio</h1>
-          <p className="text-[#6a6a6a]">
+          <h1 className="text-3xl font-bold text-[#1a1a2e] mb-1">Portfolio</h1>
+          <p className="text-[#7a8aa3]">
             Track your investments and performance
           </p>
         </div>
@@ -253,16 +243,16 @@ function PortfolioPage() {
         <Card className="lg:col-span-2" variant="elevated">
           <div className="flex items-start justify-between mb-6">
             <div>
-              <p className="text-[#6a6a6a] text-sm mb-1">
+              <p className="text-[#7a8aa3] text-sm mb-1">
                 Total Portfolio Value
               </p>
-              <p className="text-4xl font-bold text-white font-tabular">
+              <p className="text-4xl font-bold text-[#1a1a2e] font-tabular">
                 {formatCurrency(currentValue)}
               </p>
               <div
                 className={clsx(
                   "flex items-center gap-2 mt-2",
-                  isPortfolioPositive ? "text-[#22C55E]" : "text-[#EF4444]",
+                  isPortfolioPositive ? "text-[#16a34a]" : "text-[#dc2626]",
                 )}
               >
                 {isPortfolioPositive ? (
@@ -275,7 +265,7 @@ function PortfolioPage() {
                   {formatCurrency(portfolioData.totalReturn)} (
                   {formatPercent(portfolioData.totalReturnPercent)})
                 </span>
-                <span className="text-[#6a6a6a]">all time</span>
+                <span className="text-[#7a8aa3]">all time</span>
               </div>
             </div>
             <div
@@ -283,21 +273,21 @@ function PortfolioPage() {
                 "w-16 h-16 rounded-2xl flex items-center justify-center",
                 "bg-gradient-to-br",
                 isPortfolioPositive
-                  ? "from-[#22C55E]/20 to-[#16A34A]/20"
-                  : "from-[#EF4444]/20 to-[#DC2626]/20",
+                  ? "from-[#16a34a]/10 to-[#15803d]/10"
+                  : "from-[#dc2626]/10 to-[#b91c1c]/10",
               )}
             >
               <Wallet
                 className={clsx(
                   "w-8 h-8",
-                  isPortfolioPositive ? "text-[#22C55E]" : "text-[#EF4444]",
+                  isPortfolioPositive ? "text-[#16a34a]" : "text-[#dc2626]",
                 )}
               />
             </div>
           </div>
 
           {/* Time Range Buttons */}
-          <div className="flex gap-1 bg-[#121212] p-1 rounded-lg mb-4 w-fit">
+          <div className="flex gap-1 bg-[#f8f9fc] p-1 rounded-lg mb-4 w-fit">
             {(["1W", "1M", "3M", "1Y", "ALL"] as TimeRange[]).map((range) => (
               <button
                 key={range}
@@ -305,8 +295,8 @@ function PortfolioPage() {
                 className={clsx(
                   "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                   timeRange === range
-                    ? "bg-[#3B82F6] text-white"
-                    : "text-[#6a6a6a] hover:text-white",
+                    ? "bg-[#482977] text-white"
+                    : "text-[#7a8aa3] hover:text-[#1a1a2e]",
                 )}
               >
                 {range}
@@ -326,29 +316,29 @@ function PortfolioPage() {
                     x2="0"
                     y2="1"
                   >
-                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#482977" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#482977" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e8ecf4" />
                 <XAxis
                   dataKey="date"
-                  stroke="#4a4a4a"
-                  tick={{ fill: "#6a6a6a", fontSize: 11 }}
+                  stroke="#c5cee0"
+                  tick={{ fill: "#7a8aa3", fontSize: 11 }}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
-                  stroke="#4a4a4a"
-                  tick={{ fill: "#6a6a6a", fontSize: 11 }}
+                  stroke="#c5cee0"
+                  tick={{ fill: "#7a8aa3", fontSize: 11 }}
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#1a1a1a",
-                    border: "1px solid #2a2a2a",
+                    backgroundColor: "white",
+                    border: "1px solid #e8ecf4",
                     borderRadius: "8px",
                   }}
                   formatter={(value: number) => [
@@ -359,7 +349,7 @@ function PortfolioPage() {
                 <Area
                   type="monotone"
                   dataKey="value"
-                  stroke="#3B82F6"
+                  stroke="#482977"
                   strokeWidth={2}
                   fill="url(#portfolioGradient)"
                 />
@@ -402,120 +392,120 @@ function PortfolioPage() {
         {/* Allocation Pie Chart */}
         <Card>
           <div className="flex items-center gap-2 mb-6">
-            <PieChart className="w-5 h-5 text-[#60A5FA]" />
+            <PieChart className="w-5 h-5 text-[#482977]" />
             <CardTitle>Asset Allocation</CardTitle>
           </div>
-          <div className="flex items-center gap-8">
-            <div className="w-48 h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <RechartsPieChart>
-                  <Pie
-                    data={allocationData}
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={4}
-                    dataKey="value"
-                  >
-                    {allocationData.map((entry, index) => (
-                      <Cell key={index} fill={entry.color} />
-                    ))}
-                  </Pie>
-                </RechartsPieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex-1 space-y-3">
-              {allocationData.map((item, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: item.color }}
-                    />
-                    <span className="text-[#9a9a9a] text-sm">{item.name}</span>
+          {allocationData.length > 0 ? (
+            <div className="flex items-center gap-8">
+              <div className="w-48 h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RechartsPieChart>
+                    <Pie
+                      data={allocationData}
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={4}
+                      dataKey="value"
+                    >
+                      {allocationData.map((entry, index) => (
+                        <Cell key={index} fill={entry.color} />
+                      ))}
+                    </Pie>
+                  </RechartsPieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex-1 space-y-3">
+                {allocationData.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: item.color }}
+                      />
+                      <span className="text-[#566279] text-sm">{item.name}</span>
+                    </div>
+                    <span className="text-[#1a1a2e] font-medium text-sm">
+                      {portfolioData.totalValue > 0 
+                        ? ((item.value / portfolioData.totalValue) * 100).toFixed(1)
+                        : 0}%
+                    </span>
                   </div>
-                  <span className="text-white font-medium text-sm">
-                    {portfolioData.totalValue > 0 
-                      ? ((item.value / portfolioData.totalValue) * 100).toFixed(1)
-                      : 0}%
-                  </span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-center py-12 text-[#7a8aa3]">
+              <p>No holdings yet. Start investing!</p>
+            </div>
+          )}
         </Card>
 
-        {/* Monthly Performance Bar Chart */}
+        {/* Performance Stats */}
         <Card>
           <div className="flex items-center gap-2 mb-6">
-            <BarChart3 className="w-5 h-5 text-[#60A5FA]" />
-            <CardTitle>Monthly Returns</CardTitle>
+            <BarChart3 className="w-5 h-5 text-[#482977]" />
+            <CardTitle>Performance Stats</CardTitle>
           </div>
-          <div className="h-48">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={monthlyPerformance}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a" />
-                <XAxis
-                  dataKey="month"
-                  stroke="#4a4a4a"
-                  tick={{ fill: "#6a6a6a", fontSize: 12 }}
-                  tickLine={false}
-                />
-                <YAxis
-                  stroke="#4a4a4a"
-                  tick={{ fill: "#6a6a6a", fontSize: 12 }}
-                  tickLine={false}
-                  tickFormatter={(v) => `${v}%`}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#1a1a1a",
-                    border: "1px solid #2a2a2a",
-                    borderRadius: "8px",
-                  }}
-                  formatter={(value: number) => [`${value}%`, "Return"]}
-                />
-                <Bar dataKey="return" radius={[4, 4, 0, 0]} fill="#3B82F6">
-                  {monthlyPerformance.map((entry, index) => (
-                    <Cell
-                      key={index}
-                      fill={entry.return >= 0 ? "#22C55E" : "#EF4444"}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center p-3 bg-[#f8f9fc] rounded-xl">
+              <span className="text-[#7a8aa3]">Total Return</span>
+              <span className={clsx(
+                "font-semibold",
+                isPortfolioPositive ? "text-[#16a34a]" : "text-[#dc2626]"
+              )}>
+                {formatPercent(portfolioData.totalReturnPercent)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-[#f8f9fc] rounded-xl">
+              <span className="text-[#7a8aa3]">Total Invested</span>
+              <span className="font-semibold text-[#1a1a2e]">
+                {formatCurrency(portfolioData.totalInvested)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-[#f8f9fc] rounded-xl">
+              <span className="text-[#7a8aa3]">Current Value</span>
+              <span className="font-semibold text-[#1a1a2e]">
+                {formatCurrency(portfolioData.totalValue)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-[#f8f9fc] rounded-xl">
+              <span className="text-[#7a8aa3]">Holdings</span>
+              <span className="font-semibold text-[#1a1a2e]">
+                {portfolioData.holdings.length}
+              </span>
+            </div>
           </div>
         </Card>
       </div>
 
       {/* Holdings Table */}
       <Card padding="none">
-        <div className="p-6 border-b border-[#2a2a2a]">
+        <div className="p-6 border-b border-[#482977]/10">
           <CardTitle>Holdings</CardTitle>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[#2a2a2a]">
-                <th className="text-left py-4 px-4 text-[#6a6a6a] text-sm font-medium">
+              <tr className="border-b border-[#482977]/10">
+                <th className="text-left py-4 px-4 text-[#7a8aa3] text-sm font-medium">
                   Asset
                 </th>
-                <th className="text-left py-4 px-4 text-[#6a6a6a] text-sm font-medium">
+                <th className="text-left py-4 px-4 text-[#7a8aa3] text-sm font-medium">
                   Quantity
                 </th>
-                <th className="text-left py-4 px-4 text-[#6a6a6a] text-sm font-medium hidden md:table-cell">
+                <th className="text-left py-4 px-4 text-[#7a8aa3] text-sm font-medium hidden md:table-cell">
                   Avg Cost
                 </th>
-                <th className="text-left py-4 px-4 text-[#6a6a6a] text-sm font-medium">
+                <th className="text-left py-4 px-4 text-[#7a8aa3] text-sm font-medium">
                   Current Price
                 </th>
-                <th className="text-left py-4 px-4 text-[#6a6a6a] text-sm font-medium">
+                <th className="text-left py-4 px-4 text-[#7a8aa3] text-sm font-medium">
                   Total Value
                 </th>
-                <th className="text-left py-4 px-4 text-[#6a6a6a] text-sm font-medium">
+                <th className="text-left py-4 px-4 text-[#7a8aa3] text-sm font-medium">
                   Gain/Loss
                 </th>
-                <th className="text-left py-4 px-4 text-[#6a6a6a] text-sm font-medium">
+                <th className="text-left py-4 px-4 text-[#7a8aa3] text-sm font-medium">
                   Actions
                 </th>
               </tr>
@@ -525,13 +515,13 @@ function PortfolioPage() {
                 <tr>
                   <td colSpan={7} className="py-12 text-center">
                     <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3B82F6]" />
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#482977]" />
                     </div>
                   </td>
                 </tr>
               ) : portfolioData.holdings.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-[#6a6a6a]">
+                  <td colSpan={7} className="py-12 text-center text-[#7a8aa3]">
                     No holdings yet. Start trading to build your portfolio!
                   </td>
                 </tr>
@@ -552,27 +542,27 @@ function PortfolioPage() {
       {/* Recent Transactions */}
       <Card>
         <div className="flex items-center gap-2 mb-6">
-          <Activity className="w-5 h-5 text-[#60A5FA]" />
+          <Activity className="w-5 h-5 text-[#482977]" />
           <CardTitle>Recent Transactions</CardTitle>
         </div>
         <div className="space-y-3">
           {!userProfile?.transactions || userProfile.transactions.length === 0 ? (
-            <div className="text-center py-8 text-[#6a6a6a]">
+            <div className="text-center py-8 text-[#7a8aa3]">
               No transactions yet
             </div>
           ) : (
             userProfile.transactions.slice(0, 5).map((tx) => (
               <div
                 key={tx.id}
-                className="flex items-center justify-between p-4 bg-[#121212] rounded-xl"
+                className="flex items-center justify-between p-4 bg-[#f8f9fc] rounded-xl"
               >
                 <div className="flex items-center gap-4">
                   <div
                     className={clsx(
                       "w-10 h-10 rounded-full flex items-center justify-center",
                       tx.type === "BUY"
-                        ? "bg-[#22C55E]/20 text-[#22C55E]"
-                        : "bg-[#EF4444]/20 text-[#EF4444]",
+                        ? "bg-[#16a34a]/10 text-[#16a34a]"
+                        : "bg-[#dc2626]/10 text-[#dc2626]",
                     )}
                   >
                     {tx.type === "BUY" ? (
@@ -582,10 +572,10 @@ function PortfolioPage() {
                     )}
                   </div>
                   <div>
-                    <p className="font-medium text-white">
+                    <p className="font-medium text-[#1a1a2e]">
                       {tx.type} {tx.ticker}
                     </p>
-                    <p className="text-sm text-[#6a6a6a]">
+                    <p className="text-sm text-[#7a8aa3]">
                       {tx.quantity} shares @ {formatCurrency(tx.price)}
                     </p>
                   </div>
@@ -594,13 +584,13 @@ function PortfolioPage() {
                   <p
                     className={clsx(
                       "font-semibold",
-                      tx.type === "BUY" ? "text-[#EF4444]" : "text-[#22C55E]",
+                      tx.type === "BUY" ? "text-[#dc2626]" : "text-[#16a34a]",
                     )}
                   >
                     {tx.type === "BUY" ? "-" : "+"}
                     {formatCurrency(tx.total)}
                   </p>
-                  <p className="text-sm text-[#6a6a6a]">
+                  <p className="text-sm text-[#7a8aa3]">
                     {new Date(tx.timestamp).toLocaleDateString()}
                   </p>
                 </div>
@@ -613,27 +603,38 @@ function PortfolioPage() {
       {/* Stats Panel */}
       <Card>
         <div className="flex items-center gap-2 mb-6">
-          <Target className="w-5 h-5 text-[#60A5FA]" />
+          <Target className="w-5 h-5 text-[#482977]" />
           <CardTitle>Performance Statistics</CardTitle>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <div>
-            <p className="text-[#6a6a6a] text-sm mb-1">Total Trades</p>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-[#7a8aa3] text-sm mb-1">Total Trades</p>
+            <p className="text-2xl font-bold text-[#1a1a2e]">
               {userProfile?.transactions?.length || 0}
             </p>
           </div>
           <div>
-            <p className="text-[#6a6a6a] text-sm mb-1">Win Rate</p>
-            <p className="text-2xl font-bold text-[#22C55E]">67%</p>
+            <p className="text-[#7a8aa3] text-sm mb-1">Total Return</p>
+            <p className={clsx(
+              "text-2xl font-bold",
+              isPortfolioPositive ? "text-[#16a34a]" : "text-[#dc2626]"
+            )}>
+              {formatPercent(portfolioData.totalReturnPercent)}
+            </p>
           </div>
           <div>
-            <p className="text-[#6a6a6a] text-sm mb-1">Best Trade</p>
-            <p className="text-2xl font-bold text-[#22C55E]">+$601.76</p>
+            <p className="text-[#7a8aa3] text-sm mb-1">Best Holding</p>
+            <p className="text-2xl font-bold text-[#16a34a]">
+              {portfolioData.holdings.length > 0 
+                ? portfolioData.holdings[0]?.ticker || '--'
+                : '--'}
+            </p>
           </div>
           <div>
-            <p className="text-[#6a6a6a] text-sm mb-1">Worst Trade</p>
-            <p className="text-2xl font-bold text-[#EF4444]">-$126.50</p>
+            <p className="text-[#7a8aa3] text-sm mb-1">Cash Balance</p>
+            <p className="text-2xl font-bold text-[#1a1a2e]">
+              {formatCurrency(userProfile?.balance || 0)}
+            </p>
           </div>
         </div>
       </Card>

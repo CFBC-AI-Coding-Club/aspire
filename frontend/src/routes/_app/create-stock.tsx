@@ -69,7 +69,7 @@ function PricePreview({
 						key={i}
 						className={clsx(
 							"flex-1 rounded-t transition-all",
-							isPositive ? "bg-[#22C55E]" : "bg-[#EF4444]",
+							isPositive ? "bg-[var(--color-success)]" : "bg-[var(--color-error)]",
 						)}
 						style={{
 							height: `${Math.max(height, 5)}%`,
@@ -161,15 +161,15 @@ function CreateStockPage() {
 		return (
 			<div className="max-w-2xl mx-auto animate-fade-in">
 				<Card className="text-center py-12">
-					<div className="w-20 h-20 rounded-full bg-[#22C55E]/20 flex items-center justify-center mx-auto mb-6">
-						<CheckCircle className="w-10 h-10 text-[#22C55E]" />
+					<div className="w-20 h-20 rounded-full bg-[var(--color-success-muted)] flex items-center justify-center mx-auto mb-6">
+						<CheckCircle className="w-10 h-10 text-[var(--color-success)]" />
 					</div>
-					<h2 className="text-2xl font-bold text-white mb-2">Stock Created!</h2>
-					<p className="text-[#6a6a6a] mb-4">
+					<h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">Stock Created!</h2>
+					<p className="text-[var(--color-text-muted)] mb-4">
 						{formData.symbol.toUpperCase()} - {formData.name} has been added to
 						the market.
 					</p>
-					<p className="text-sm text-[#4a4a4a]">Redirecting to market...</p>
+					<p className="text-sm text-[var(--color-text-muted)]">Redirecting to market...</p>
 				</Card>
 			</div>
 		);
@@ -179,10 +179,10 @@ function CreateStockPage() {
 		<div className="max-w-4xl mx-auto animate-fade-in">
 			{/* Header */}
 			<div className="mb-8">
-				<h1 className="text-3xl font-bold text-white mb-2">
+				<h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">
 					Create Custom Stock
 				</h1>
-				<p className="text-[#6a6a6a]">
+				<p className="text-[var(--color-text-muted)]">
 					Design your own stock for the simulation market
 				</p>
 			</div>
@@ -194,8 +194,8 @@ function CreateStockPage() {
 						<form onSubmit={handleSubmit} className="space-y-6">
 							{/* Basic Info */}
 							<div>
-								<h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-									<Sparkles className="w-5 h-5 text-[#60A5FA]" />
+								<h3 className="font-semibold text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
+									<Sparkles className="w-5 h-5 text-[var(--color-primary)]" />
 									Basic Information
 								</h3>
 								<div className="grid md:grid-cols-2 gap-4">
@@ -250,14 +250,14 @@ function CreateStockPage() {
 
 							{/* Behavior Settings */}
 							<div>
-								<h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-									<TrendingUp className="w-5 h-5 text-[#60A5FA]" />
+								<h3 className="font-semibold text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
+									<TrendingUp className="w-5 h-5 text-[var(--color-primary)]" />
 									Behavior Settings
 								</h3>
 
 								{/* Volatility */}
 								<div className="mb-4">
-									<label className="block text-sm font-medium text-[#e0e0e0] mb-3">
+									<label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-3">
 										Volatility Level
 									</label>
 									<div className="grid grid-cols-3 gap-3">
@@ -271,11 +271,11 @@ function CreateStockPage() {
 														"p-4 rounded-xl border-2 text-center transition-all",
 														formData.volatility === level
 															? level === "low"
-																? "border-[#22C55E] bg-[#22C55E]/10"
+																? "border-[var(--color-success)] bg-[var(--color-success-muted)]"
 																: level === "medium"
-																	? "border-[#FBBF24] bg-[#FBBF24]/10"
-																	: "border-[#EF4444] bg-[#EF4444]/10"
-															: "border-[#2a2a2a] hover:border-[#3a3a3a]",
+																	? "border-[var(--color-warning)] bg-[var(--color-warning-muted)]"
+																	: "border-[var(--color-error)] bg-[var(--color-error-muted)]"
+															: "border-[var(--color-border)] hover:border-[var(--color-border-hover)]",
 													)}
 												>
 													<p
@@ -283,16 +283,16 @@ function CreateStockPage() {
 															"font-semibold capitalize mb-1",
 															formData.volatility === level
 																? level === "low"
-																	? "text-[#22C55E]"
+																	? "text-[var(--color-success)]"
 																	: level === "medium"
-																		? "text-[#FBBF24]"
-																		: "text-[#EF4444]"
-																: "text-white",
+																		? "text-[var(--color-warning)]"
+																		: "text-[var(--color-error)]"
+																: "text-[var(--color-text-primary)]",
 														)}
 													>
 														{level}
 													</p>
-													<p className="text-xs text-[#6a6a6a]">
+													<p className="text-xs text-[var(--color-text-muted)]">
 														{level === "low"
 															? "Small price swings"
 															: level === "medium"
@@ -307,7 +307,7 @@ function CreateStockPage() {
 
 								{/* Trend */}
 								<div>
-									<label className="block text-sm font-medium text-[#e0e0e0] mb-3">
+									<label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-3">
 										Growth Trend
 									</label>
 									<div className="grid grid-cols-3 gap-3">
@@ -321,20 +321,20 @@ function CreateStockPage() {
 														"p-4 rounded-xl border-2 text-center transition-all",
 														formData.trend === trend
 															? trend === "bullish"
-																? "border-[#22C55E] bg-[#22C55E]/10"
+																? "border-[var(--color-success)] bg-[var(--color-success-muted)]"
 																: trend === "neutral"
-																	? "border-[#3B82F6] bg-[#3B82F6]/10"
-																	: "border-[#EF4444] bg-[#EF4444]/10"
-															: "border-[#2a2a2a] hover:border-[#3a3a3a]",
+																	? "border-[var(--color-primary)] bg-[var(--color-primary-muted)]"
+																	: "border-[var(--color-error)] bg-[var(--color-error-muted)]"
+															: "border-[var(--color-border)] hover:border-[var(--color-border-hover)]",
 													)}
 												>
 													<div className="flex justify-center mb-2">
 														{trend === "bullish" ? (
-															<TrendingUp className="w-5 h-5 text-[#22C55E]" />
+															<TrendingUp className="w-5 h-5 text-[var(--color-success)]" />
 														) : trend === "bearish" ? (
-															<TrendingDown className="w-5 h-5 text-[#EF4444]" />
+															<TrendingDown className="w-5 h-5 text-[var(--color-error)]" />
 														) : (
-															<span className="text-[#3B82F6]">→</span>
+															<span className="text-[var(--color-primary)]">→</span>
 														)}
 													</div>
 													<p
@@ -342,16 +342,16 @@ function CreateStockPage() {
 															"font-semibold capitalize mb-1",
 															formData.trend === trend
 																? trend === "bullish"
-																	? "text-[#22C55E]"
+																	? "text-[var(--color-success)]"
 																	: trend === "neutral"
-																		? "text-[#60A5FA]"
-																		: "text-[#EF4444]"
-																: "text-white",
+																		? "text-[var(--color-primary)]"
+																		: "text-[var(--color-error)]"
+																: "text-[var(--color-text-primary)]",
 														)}
 													>
 														{trend}
 													</p>
-													<p className="text-xs text-[#6a6a6a]">
+													<p className="text-xs text-[var(--color-text-muted)]">
 														{trend === "bullish"
 															? "Tends upward"
 															: trend === "neutral"
@@ -385,33 +385,33 @@ function CreateStockPage() {
 						<CardTitle className="mb-4">Preview</CardTitle>
 
 						{/* Stock Card Preview */}
-						<div className="bg-[#121212] rounded-xl p-4 mb-4">
+						<div className="bg-[var(--color-base-800)] rounded-xl p-4 mb-4">
 							<div className="flex items-center gap-3 mb-3">
-								<div className="w-12 h-12 rounded-xl bg-[#2a2a2a] flex items-center justify-center text-xl font-bold text-white">
+								<div className="w-12 h-12 rounded-xl bg-[var(--color-base-700)] flex items-center justify-center text-xl font-bold text-[var(--color-primary)]">
 									{formData.symbol.slice(0, 2) || "??"}
 								</div>
 								<div>
-									<p className="font-bold text-white">
+									<p className="font-bold text-[var(--color-text-primary)]">
 										{formData.symbol || "SYMBOL"}
 									</p>
-									<p className="text-sm text-[#6a6a6a]">
+									<p className="text-sm text-[var(--color-text-muted)]">
 										{formData.name || "Company Name"}
 									</p>
 								</div>
 							</div>
-							<p className="text-2xl font-bold text-white font-mono mb-2">
+							<p className="text-2xl font-bold text-[var(--color-text-primary)] font-mono mb-2">
 								{formData.price
 									? formatCurrency(parseFloat(formData.price))
 									: "$0.00"}
 							</p>
-							<span className="px-2 py-1 rounded-lg bg-[#2a2a2a] text-[#6a6a6a] text-xs">
+							<span className="px-2 py-1 rounded-lg bg-[var(--color-primary-muted)] text-[var(--color-primary)] text-xs">
 								{formData.sector}
 							</span>
 						</div>
 
 						{/* Price Movement Preview */}
-						<div className="bg-[#121212] rounded-xl p-4">
-							<p className="text-sm text-[#6a6a6a] mb-3">
+						<div className="bg-[var(--color-base-800)] rounded-xl p-4">
+							<p className="text-sm text-[var(--color-text-muted)] mb-3">
 								Simulated Price Movement
 							</p>
 							<PricePreview
@@ -423,12 +423,12 @@ function CreateStockPage() {
 					</Card>
 
 					{/* Info Card */}
-					<Card className="bg-[#FBBF24]/10 border-[#FBBF24]/30">
+					<Card className="bg-[var(--color-warning-muted)] border-[var(--color-warning)]">
 						<div className="flex items-start gap-3">
-							<AlertCircle className="w-5 h-5 text-[#FBBF24] flex-shrink-0 mt-0.5" />
+							<AlertCircle className="w-5 h-5 text-[var(--color-warning)] flex-shrink-0 mt-0.5" />
 							<div>
-								<p className="font-medium text-[#FBBF24] mb-1">Note</p>
-								<p className="text-sm text-[#6a6a6a]">
+								<p className="font-medium text-[var(--color-warning)] mb-1">Note</p>
+								<p className="text-sm text-[var(--color-text-muted)]">
 									Custom stocks are for simulation only. Price movements are
 									randomly generated based on your volatility and trend
 									settings.

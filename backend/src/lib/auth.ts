@@ -9,6 +9,19 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: true,
+        defaultValue: "STUDENT",
+      },
+      parentId: {
+        type: "string",
+        required: false,
+      },
+    }
+  },
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:5491",
   basePath: "/api/auth",
   session: {

@@ -8,7 +8,7 @@ import {
 import { authClient } from "../lib/auth";
 
 // Account types
-export type AccountType = "parent" | "child";
+export type AccountType = "PARENT" | "CHILD";
 
 // User interface for both account types
 export interface User {

@@ -19,79 +19,12 @@ import { Button } from "../../components/ui/Button";
 import { Card, CardTitle, StatCard } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
 import { useAuth } from "../../contexts/AuthContext";
+import { useUserProfileQuery } from "../../hooks/queries/useUsersQuery";
 import { formatCurrency } from "../../data/mockStocks";
 
 export const Route = createFileRoute("/_app/profile")({
 	component: ProfilePage,
 });
-
-// Achievement data
-const achievements = [
-	{
-		id: 1,
-		icon: "🎯",
-		name: "First Trade",
-		description: "Complete your first trade",
-		unlocked: true,
-		date: "2024-01-15",
-	},
-	{
-		id: 2,
-		icon: "📈",
-		name: "Bull Run",
-		description: "Make 10 profitable trades",
-		unlocked: true,
-		date: "2024-02-01",
-	},
-	{
-		id: 3,
-		icon: "💎",
-		name: "Diamond Hands",
-		description: "Hold a stock for 30 days",
-		unlocked: true,
-		date: "2024-02-15",
-	},
-	{
-		id: 4,
-		icon: "🏆",
-		name: "Top 10",
-		description: "Reach top 10 on leaderboard",
-		unlocked: true,
-		date: "2024-03-01",
-	},
-	{
-		id: 5,
-		icon: "📚",
-		name: "Scholar",
-		description: "Complete all beginner guides",
-		unlocked: false,
-		date: null,
-	},
-	{
-		id: 6,
-		icon: "🎮",
-		name: "Game Master",
-		description: "Win 50 games",
-		unlocked: false,
-		date: null,
-	},
-	{
-		id: 7,
-		icon: "💰",
-		name: "Millionaire",
-		description: "Reach $1M portfolio value",
-		unlocked: false,
-		date: null,
-	},
-	{
-		id: 8,
-		icon: "🔥",
-		name: "Hot Streak",
-		description: "10 winning trades in a row",
-		unlocked: false,
-		date: null,
-	},
-];
 
 // Avatar options
 const avatarOptions = [
@@ -111,6 +44,7 @@ const avatarOptions = [
 
 function ProfilePage() {
 	const { user, logout, updateUser } = useAuth();
+	const { data: userProfile } = useUserProfileQuery();
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedName, setEditedName] = useState(user?.name || "");
 	const [showAvatarPicker, setShowAvatarPicker] = useState(false);
@@ -119,7 +53,6 @@ function ProfilePage() {
 	>("overview");
 
 	const isParent = user?.accountType === "parent";
-	const accentColor = isParent ? "yellow" : "blue";
 
 	const handleSave = () => {
 		updateUser({ name: editedName });
@@ -131,14 +64,11 @@ function ProfilePage() {
 		setShowAvatarPicker(false);
 	};
 
-	// Mock stats
+	// Stats from user profile
 	const stats = {
-		totalTrades: 47,
-		winRate: 68,
-		bestTrade: 601.76,
-		worstTrade: -126.5,
-		avgHoldTime: "12 days",
-		portfolioATH: 19500.0,
+		totalTrades: userProfile?.transactions?.length || 0,
+		holdings: userProfile?.portfolio?.length || 0,
+		balance: userProfile?.balance || 0,
 	};
 
 	return (
@@ -147,18 +77,13 @@ function ProfilePage() {
 			<Card
 				className={clsx(
 					"relative overflow-hidden",
-					isParent
-						? "bg-gradient-to-br from-[#FBBF24]/10 to-[#F59E0B]/5"
-						: "bg-gradient-to-br from-[#3B82F6]/10 to-[#2563EB]/5",
+					"bg-gradient-to-br from-[#482977]/5 to-[#6b42a1]/5",
 				)}
 			>
 				{/* Background Pattern */}
 				<div className="absolute top-0 right-0 w-64 h-64 opacity-10">
 					<div
-						className={clsx(
-							"absolute inset-0 rounded-full blur-3xl",
-							isParent ? "bg-[#FBBF24]" : "bg-[#3B82F6]",
-						)}
+						className="absolute inset-0 rounded-full blur-3xl bg-[#482977]"
 					/>
 				</div>
 
@@ -170,28 +95,21 @@ function ProfilePage() {
 							className={clsx(
 								"w-24 h-24 rounded-2xl flex items-center justify-center text-5xl",
 								"bg-gradient-to-br border-4 transition-transform hover:scale-105",
-								isParent
-									? "from-[#FBBF24]/20 to-[#F59E0B]/20 border-[#FBBF24]/30"
-									: "from-[#3B82F6]/20 to-[#2563EB]/20 border-[#3B82F6]/30",
+								"from-[#482977]/10 to-[#6b42a1]/10 border-[#482977]/20",
 							)}
 						>
 							{user?.avatar || "👤"}
 						</button>
 						<button
 							onClick={() => setShowAvatarPicker(!showAvatarPicker)}
-							className={clsx(
-								"absolute -bottom-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center",
-								isParent
-									? "bg-[#FBBF24] text-black"
-									: "bg-[#3B82F6] text-white",
-							)}
+							className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center bg-[#482977] text-white"
 						>
 							<Camera className="w-4 h-4" />
 						</button>
 
 						{/* Avatar Picker */}
 						{showAvatarPicker && (
-							<div className="absolute top-full mt-2 left-0 z-20 bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-3 shadow-xl">
+							<div className="absolute top-full mt-2 left-0 z-20 bg-white border border-[#482977]/10 rounded-xl p-3 shadow-xl">
 								<div className="grid grid-cols-4 gap-2">
 									{avatarOptions.map((avatar) => (
 										<button
@@ -199,9 +117,9 @@ function ProfilePage() {
 											onClick={() => handleAvatarChange(avatar)}
 											className={clsx(
 												"w-10 h-10 rounded-lg flex items-center justify-center text-xl",
-												"hover:bg-[#2a2a2a] transition-colors",
+												"hover:bg-[#f1f3f9] transition-colors",
 												user?.avatar === avatar &&
-													"bg-[#3B82F6]/20 ring-2 ring-[#3B82F6]",
+													"bg-[#482977]/10 ring-2 ring-[#482977]",
 											)}
 										>
 											{avatar}
@@ -220,7 +138,6 @@ function ProfilePage() {
 									value={editedName}
 									onChange={(e) => setEditedName(e.target.value)}
 									className="text-xl font-bold"
-									accent={accentColor}
 								/>
 								<Button variant="success" size="sm" onClick={handleSave}>
 									<Check className="w-4 h-4" />
@@ -238,10 +155,10 @@ function ProfilePage() {
 							</div>
 						) : (
 							<div className="flex items-center gap-2 justify-center md:justify-start">
-								<h1 className="text-2xl font-bold text-white">{user?.name}</h1>
+								<h1 className="text-2xl font-bold text-[#1a1a2e]">{user?.name}</h1>
 								<button
 									onClick={() => setIsEditing(true)}
-									className="text-[#6a6a6a] hover:text-white transition-colors"
+									className="text-[#7a8aa3] hover:text-[#482977] transition-colors"
 								>
 									<Edit2 className="w-4 h-4" />
 								</button>
@@ -250,14 +167,14 @@ function ProfilePage() {
 						<p
 							className={clsx(
 								"text-sm font-medium mb-2",
-								isParent ? "text-[#FBBF24]" : "text-[#60A5FA]",
+								isParent ? "text-[#c22f99]" : "text-[#482977]",
 							)}
 						>
 							{isParent
 								? "Parent Account"
 								: `Level ${user?.level || 1} Investor`}
 						</p>
-						<p className="text-[#6a6a6a] text-sm">
+						<p className="text-[#7a8aa3] text-sm">
 							Member since{" "}
 							{new Date(user?.createdAt || "").toLocaleDateString("en-US", {
 								month: "long",
@@ -270,20 +187,16 @@ function ProfilePage() {
 					{!isParent && (
 						<div className="flex gap-6">
 							<div className="text-center">
-								<p className="text-2xl font-bold text-white">
-									{user?.points || 0}
+								<p className="text-2xl font-bold text-[#1a1a2e]">
+									{userProfile?.xp || 0}
 								</p>
-								<p className="text-xs text-[#6a6a6a]">XP Points</p>
+								<p className="text-xs text-[#7a8aa3]">XP Points</p>
 							</div>
 							<div className="text-center">
-								<p className="text-2xl font-bold text-white">
-									{achievements.filter((a) => a.unlocked).length}
+								<p className="text-2xl font-bold text-[#1a1a2e]">
+									{stats.holdings}
 								</p>
-								<p className="text-xs text-[#6a6a6a]">Achievements</p>
-							</div>
-							<div className="text-center">
-								<p className="text-2xl font-bold text-white">#4</p>
-								<p className="text-xs text-[#6a6a6a]">Rank</p>
+								<p className="text-xs text-[#7a8aa3]">Holdings</p>
 							</div>
 						</div>
 					)}
@@ -291,7 +204,7 @@ function ProfilePage() {
 			</Card>
 
 			{/* Tabs */}
-			<div className="flex gap-1 bg-[#1a1a1a] p-1 rounded-xl w-fit border border-[#2a2a2a]">
+			<div className="flex gap-1 bg-[#f1f3f9] p-1 rounded-xl w-fit border border-[#482977]/10">
 				{(["overview", "achievements", "settings"] as const).map((tab) => (
 					<button
 						key={tab}
@@ -299,10 +212,8 @@ function ProfilePage() {
 						className={clsx(
 							"px-5 py-2 rounded-lg text-sm font-medium transition-colors capitalize",
 							activeTab === tab
-								? isParent
-									? "bg-[#FBBF24] text-black"
-									: "bg-[#3B82F6] text-white"
-								: "text-[#6a6a6a] hover:text-white",
+								? "bg-[#482977] text-white"
+								: "text-[#7a8aa3] hover:text-[#1a1a2e]",
 						)}
 					>
 						{tab}
@@ -318,65 +229,43 @@ function ProfilePage() {
 						<StatCard
 							label="Total Trades"
 							value={stats.totalTrades}
-							icon={<TrendingUp className="w-6 h-6 text-[#60A5FA]" />}
+							icon={<TrendingUp className="w-6 h-6 text-[#482977]" />}
 						/>
 						<StatCard
-							label="Win Rate"
-							value={`${stats.winRate}%`}
-							icon={<Target className="w-6 h-6 text-[#22C55E]" />}
+							label="Holdings"
+							value={stats.holdings}
+							icon={<Target className="w-6 h-6 text-[#16a34a]" />}
 							accent="success"
 						/>
 						<StatCard
-							label="Best Trade"
-							value={formatCurrency(stats.bestTrade)}
-							icon="🎯"
-							change={35}
-							accent="success"
-						/>
-						<StatCard
-							label="Worst Trade"
-							value={formatCurrency(Math.abs(stats.worstTrade))}
-							icon="📉"
-							change={-4.42}
-							accent="error"
-						/>
-						<StatCard
-							label="Avg Hold Time"
-							value={stats.avgHoldTime}
-							icon={<Calendar className="w-6 h-6 text-[#FBBF24]" />}
-						/>
-						<StatCard
-							label="Portfolio ATH"
-							value={formatCurrency(stats.portfolioATH)}
-							icon={<Trophy className="w-6 h-6 text-[#FBBF24]" />}
+							label="Balance"
+							value={formatCurrency(stats.balance)}
+							icon="💰"
 						/>
 					</div>
 
-					{/* Recent Achievements */}
+					{/* Account Info */}
 					<Card>
-						<CardTitle className="mb-4">Recent Achievements</CardTitle>
-						<div className="grid md:grid-cols-2 gap-3">
-							{achievements
-								.filter((a) => a.unlocked)
-								.slice(0, 4)
-								.map((achievement) => (
-									<div
-										key={achievement.id}
-										className="flex items-center gap-3 p-3 bg-[#121212] rounded-xl"
-									>
-										<div className="w-12 h-12 rounded-xl bg-[#FBBF24]/20 flex items-center justify-center text-2xl">
-											{achievement.icon}
-										</div>
-										<div className="flex-1">
-											<p className="font-medium text-white">
-												{achievement.name}
-											</p>
-											<p className="text-xs text-[#6a6a6a]">
-												{achievement.date}
-											</p>
-										</div>
-									</div>
-								))}
+						<CardTitle className="mb-4">Account Information</CardTitle>
+						<div className="space-y-4">
+							<div className="flex justify-between items-center p-3 bg-[#f8f9fc] rounded-xl">
+								<span className="text-[#7a8aa3]">Account Type</span>
+								<span className="font-semibold text-[#1a1a2e]">
+									{isParent ? "Parent" : "Child"}
+								</span>
+							</div>
+							<div className="flex justify-between items-center p-3 bg-[#f8f9fc] rounded-xl">
+								<span className="text-[#7a8aa3]">Level</span>
+								<span className="font-semibold text-[#1a1a2e]">
+									{user?.level || 1}
+								</span>
+							</div>
+							<div className="flex justify-between items-center p-3 bg-[#f8f9fc] rounded-xl">
+								<span className="text-[#7a8aa3]">XP</span>
+								<span className="font-semibold text-[#1a1a2e]">
+									{userProfile?.xp || 0}
+								</span>
+							</div>
 						</div>
 					</Card>
 				</div>
@@ -386,46 +275,12 @@ function ProfilePage() {
 				<div className="animate-fade-in">
 					<Card>
 						<div className="flex items-center justify-between mb-6">
-							<CardTitle>All Achievements</CardTitle>
-							<span className="text-sm text-[#6a6a6a]">
-								{achievements.filter((a) => a.unlocked).length} /{" "}
-								{achievements.length} unlocked
-							</span>
+							<CardTitle>Achievements</CardTitle>
 						</div>
-						<div className="grid md:grid-cols-2 gap-4">
-							{achievements.map((achievement) => (
-								<div
-									key={achievement.id}
-									className={clsx(
-										"flex items-center gap-4 p-4 rounded-xl transition-all",
-										achievement.unlocked
-											? "bg-[#121212]"
-											: "bg-[#0a0a0a] opacity-50",
-									)}
-								>
-									<div
-										className={clsx(
-											"w-14 h-14 rounded-xl flex items-center justify-center text-3xl",
-											achievement.unlocked ? "bg-[#FBBF24]/20" : "bg-[#2a2a2a]",
-										)}
-									>
-										{achievement.icon}
-									</div>
-									<div className="flex-1">
-										<p className="font-semibold text-white">
-											{achievement.name}
-										</p>
-										<p className="text-sm text-[#6a6a6a]">
-											{achievement.description}
-										</p>
-										{achievement.unlocked && (
-											<p className="text-xs text-[#22C55E] mt-1">
-												✓ Unlocked {achievement.date}
-											</p>
-										)}
-									</div>
-								</div>
-							))}
+						<div className="text-center py-12 text-[#7a8aa3]">
+							<div className="text-4xl mb-4">🏆</div>
+							<p>Achievements coming soon!</p>
+							<p className="text-sm mt-1">Keep trading to unlock achievements.</p>
 						</div>
 					</Card>
 				</div>
@@ -436,58 +291,58 @@ function ProfilePage() {
 					<Card>
 						<CardTitle className="mb-6">Preferences</CardTitle>
 						<div className="space-y-4">
-							<div className="flex items-center justify-between p-4 bg-[#121212] rounded-xl">
+							<div className="flex items-center justify-between p-4 bg-[#f8f9fc] rounded-xl">
 								<div className="flex items-center gap-3">
-									<Bell className="w-5 h-5 text-[#6a6a6a]" />
+									<Bell className="w-5 h-5 text-[#7a8aa3]" />
 									<div>
-										<p className="font-medium text-white">Notifications</p>
-										<p className="text-sm text-[#6a6a6a]">
+										<p className="font-medium text-[#1a1a2e]">Notifications</p>
+										<p className="text-sm text-[#7a8aa3]">
 											Get alerts about your portfolio
 										</p>
 									</div>
 								</div>
-								<button className="w-12 h-6 bg-[#3B82F6] rounded-full relative">
+								<button className="w-12 h-6 bg-[#482977] rounded-full relative">
 									<div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full" />
 								</button>
 							</div>
 
-							<div className="flex items-center justify-between p-4 bg-[#121212] rounded-xl">
+							<div className="flex items-center justify-between p-4 bg-[#f8f9fc] rounded-xl">
 								<div className="flex items-center gap-3">
-									<Moon className="w-5 h-5 text-[#6a6a6a]" />
+									<Moon className="w-5 h-5 text-[#7a8aa3]" />
 									<div>
-										<p className="font-medium text-white">Dark Mode</p>
-										<p className="text-sm text-[#6a6a6a]">Always enabled</p>
+										<p className="font-medium text-[#1a1a2e]">Theme</p>
+										<p className="text-sm text-[#7a8aa3]">Light mode</p>
 									</div>
 								</div>
-								<button className="w-12 h-6 bg-[#3B82F6] rounded-full relative cursor-not-allowed opacity-50">
-									<div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full" />
+								<button className="w-12 h-6 bg-[#dde3ef] rounded-full relative cursor-not-allowed opacity-50">
+									<div className="absolute left-1 top-1 w-4 h-4 bg-[#7a8aa3] rounded-full" />
 								</button>
 							</div>
 
-							<div className="flex items-center justify-between p-4 bg-[#121212] rounded-xl">
+							<div className="flex items-center justify-between p-4 bg-[#f8f9fc] rounded-xl">
 								<div className="flex items-center gap-3">
-									<Shield className="w-5 h-5 text-[#6a6a6a]" />
+									<Shield className="w-5 h-5 text-[#7a8aa3]" />
 									<div>
-										<p className="font-medium text-white">Privacy</p>
-										<p className="text-sm text-[#6a6a6a]">
+										<p className="font-medium text-[#1a1a2e]">Privacy</p>
+										<p className="text-sm text-[#7a8aa3]">
 											Hide profile from leaderboard
 										</p>
 									</div>
 								</div>
-								<button className="w-12 h-6 bg-[#2a2a2a] rounded-full relative">
-									<div className="absolute left-1 top-1 w-4 h-4 bg-[#6a6a6a] rounded-full" />
+								<button className="w-12 h-6 bg-[#dde3ef] rounded-full relative">
+									<div className="absolute left-1 top-1 w-4 h-4 bg-[#7a8aa3] rounded-full" />
 								</button>
 							</div>
 						</div>
 					</Card>
 
-					<Card className="border-[#EF4444]/30">
+					<Card className="border-[#dc2626]/20">
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-3">
-								<LogOut className="w-5 h-5 text-[#EF4444]" />
+								<LogOut className="w-5 h-5 text-[#dc2626]" />
 								<div>
-									<p className="font-medium text-white">Log Out</p>
-									<p className="text-sm text-[#6a6a6a]">
+									<p className="font-medium text-[#1a1a2e]">Log Out</p>
+									<p className="text-sm text-[#7a8aa3]">
 										Sign out of your account
 									</p>
 								</div>

@@ -12,13 +12,15 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     {
       icon: TrendingUp,
       title: "Learn About Money",
-      description: "Take fun quizzes and play games to understand how money works",
+      description:
+        "Take fun quizzes and play games to understand how money works",
       color: "#2E8BC0",
     },
     {
       icon: Target,
       title: "Set Savings Goals",
-      description: "Create goals and track your progress as you save for what you want",
+      description:
+        "Create goals and track your progress as you save for what you want",
       color: "#2EC4B6",
     },
     {
@@ -46,6 +48,15 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   return (
     <div className="w-full min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
       <div className="max-w-2xl w-full space-y-8">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <img
+            src="/aspire-logo.png"
+            alt="Aspire - Achieving Success through Personal Investment, Resources and Education"
+            className="h-12 w-auto"
+          />
+        </div>
+
         {/* Progress Dots */}
         <div className="flex justify-center gap-2">
           {steps.map((_, index) => (
@@ -73,7 +84,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           {/* Text */}
           <div className="space-y-4">
             <h1 className="text-[#1B262C]">{step.title}</h1>
-            <p className="text-[#7D8B91] max-w-md mx-auto">{step.description}</p>
+            <p className="text-[#7D8B91] max-w-md mx-auto">
+              {step.description}
+            </p>
           </div>
         </div>
 
@@ -89,7 +102,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             onClick={handleNext}
             className="flex-1 h-14 bg-[#2E8BC0] text-white rounded-2xl hover:bg-[#2579a8] transition-colors flex items-center justify-center gap-2"
           >
-            <span>{currentStep === steps.length - 1 ? "Get Started" : "Next"}</span>
+            <span>
+              {currentStep === steps.length - 1 ? "Get Started" : "Next"}
+            </span>
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>

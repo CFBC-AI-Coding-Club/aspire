@@ -10,10 +10,14 @@ function IndexPage() {
 
 	if (isLoading) {
 		return (
-			<div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+			<div className="min-h-screen bg-[var(--color-base-900)] flex items-center justify-center">
 				<div className="flex flex-col items-center gap-4">
-					<div className="w-12 h-12 border-4 border-[#3B82F6] border-t-transparent rounded-full animate-spin" />
-					<p className="text-[#6a6a6a]">Loading...</p>
+					<img 
+						src="/aspire-logo.png" 
+						alt="Aspire" 
+						className="h-12 w-auto mb-4 animate-pulse"
+					/>
+					<div className="w-8 h-8 border-3 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin" />
 				</div>
 			</div>
 		);

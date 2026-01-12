@@ -10,8 +10,6 @@ datasource db {
   provider = "postgresql"
 }
 
-// --- Enums for Fixed Values ---
-
 enum Role {
   ADMIN
   PARENT

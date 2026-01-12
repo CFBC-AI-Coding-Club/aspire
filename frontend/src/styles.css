@@ -4,61 +4,84 @@
 @import "tailwindcss";
 
 :root {
-  --color-base-900: #0a0a0a;
-  --color-base-800: #121212;
-  --color-base-700: #1a1a1a;
-  --color-base-600: #242424;
-  --color-base-500: #2a2a2a;
-  --color-base-400: #3a3a3a;
-  --color-base-300: #4a4a4a;
-  --color-base-200: #6a6a6a;
-  --color-base-100: #9a9a9a;
-  --color-base-50: #e0e0e0;
+  /* Light theme base colors */
+  --color-base-900: #ffffff;
+  --color-base-800: #f8f9fc;
+  --color-base-700: #f1f3f9;
+  --color-base-600: #e8ecf4;
+  --color-base-500: #dde3ef;
+  --color-base-400: #c5cee0;
+  --color-base-300: #a0aec4;
+  --color-base-200: #7a8aa3;
+  --color-base-100: #566279;
+  --color-base-50: #2d3748;
 
-  --color-parent-primary: #FBBF24;
-  --color-parent-light: #FCD34D;
-  --color-parent-dark: #D97706;
-  --color-parent-muted: rgba(251, 191, 36, 0.1);
-  --color-parent-border: rgba(251, 191, 36, 0.3);
+  /* Primary purple */
+  --color-primary: #482977;
+  --color-primary-light: #6b42a1;
+  --color-primary-dark: #351d5a;
+  --color-primary-muted: rgba(72, 41, 119, 0.1);
+  --color-primary-border: rgba(72, 41, 119, 0.3);
 
-  --color-child-primary: #3B82F6;
-  --color-child-light: #60A5FA;
-  --color-child-dark: #2563EB;
-  --color-child-muted: rgba(59, 130, 246, 0.1);
-  --color-child-border: rgba(59, 130, 246, 0.3);
+  /* Secondary magenta/pink */
+  --color-secondary: #c22f99;
+  --color-secondary-light: #d94db3;
+  --color-secondary-dark: #9a2579;
+  --color-secondary-muted: rgba(194, 47, 153, 0.1);
+  --color-secondary-border: rgba(194, 47, 153, 0.3);
 
-  --color-success: #22C55E;
-  --color-success-light: #4ADE80;
-  --color-success-muted: rgba(34, 197, 94, 0.15);
-  --color-error: #EF4444;
-  --color-error-light: #F87171;
-  --color-error-muted: rgba(239, 68, 68, 0.15);
-  --color-warning: #F59E0B;
-  --color-warning-muted: rgba(245, 158, 11, 0.15);
+  /* Parent/Child colors - now using primary/secondary */
+  --color-parent-primary: #c22f99;
+  --color-parent-light: #d94db3;
+  --color-parent-dark: #9a2579;
+  --color-parent-muted: rgba(194, 47, 153, 0.1);
+  --color-parent-border: rgba(194, 47, 153, 0.3);
+
+  --color-child-primary: #482977;
+  --color-child-light: #6b42a1;
+  --color-child-dark: #351d5a;
+  --color-child-muted: rgba(72, 41, 119, 0.1);
+  --color-child-border: rgba(72, 41, 119, 0.3);
+
+  --color-success: #16a34a;
+  --color-success-light: #22c55e;
+  --color-success-muted: rgba(22, 163, 74, 0.12);
+  --color-error: #dc2626;
+  --color-error-light: #ef4444;
+  --color-error-muted: rgba(220, 38, 38, 0.12);
+  --color-warning: #d97706;
+  --color-warning-muted: rgba(217, 119, 6, 0.12);
   
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #A1A1AA;
-  --color-text-muted: #71717A;
-  --color-text-inverse: #0a0a0a;
+  /* Text colors for light theme */
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #566279;
+  --color-text-muted: #7a8aa3;
+  --color-text-inverse: #ffffff;
 
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.15);
-  --color-ring: rgba(59, 130, 246, 0.5);
+  /* Border colors */
+  --color-border: rgba(72, 41, 119, 0.12);
+  --color-border-hover: rgba(72, 41, 119, 0.25);
+  --color-ring: rgba(72, 41, 119, 0.4);
 
-  --gradient-parent: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
-  --gradient-child: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-  --gradient-success: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
-  --gradient-dark: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
-  --gradient-glow-blue: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
-  --gradient-glow-yellow: radial-gradient(ellipse at center, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #482977 0%, #6b42a1 100%);
+  --gradient-secondary: linear-gradient(135deg, #c22f99 0%, #9a2579 100%);
+  --gradient-success: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  --gradient-light: linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+  --gradient-glow-primary: radial-gradient(ellipse at center, rgba(72, 41, 119, 0.12) 0%, transparent 70%);
+  --gradient-glow-secondary: radial-gradient(ellipse at center, rgba(194, 47, 153, 0.12) 0%, transparent 70%);
+
+  /* Keep for backwards compat */
+  --gradient-parent: linear-gradient(135deg, #c22f99 0%, #9a2579 100%);
+  --gradient-child: linear-gradient(135deg, #482977 0%, #6b42a1 100%);
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-  --shadow-glow-blue: 0 0 40px rgba(59, 130, 246, 0.3);
-  --shadow-glow-yellow: 0 0 40px rgba(251, 191, 36, 0.3);
+  --shadow-sm: 0 1px 2px 0 rgba(72, 41, 119, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(72, 41, 119, 0.07), 0 2px 4px -2px rgba(72, 41, 119, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(72, 41, 119, 0.08), 0 4px 6px -4px rgba(72, 41, 119, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(72, 41, 119, 0.1), 0 8px 10px -6px rgba(72, 41, 119, 0.05);
+  --shadow-glow-primary: 0 0 40px rgba(72, 41, 119, 0.2);
+  --shadow-glow-secondary: 0 0 40px rgba(194, 47, 153, 0.2);
 
   /* Typography */
   --font-sans: 'Sora', system-ui, -apple-system, sans-serif;
@@ -94,7 +117,7 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-base-900);
+  background-color: var(--color-base-800);
   color: var(--color-text-primary);
   line-height: 1.6;
   min-height: 100vh;
@@ -112,7 +135,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-base-800);
+  background: var(--color-base-700);
   border-radius: var(--radius-full);
 }
 
@@ -127,13 +150,13 @@ body {
 
 /* Selection */
 ::selection {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgba(72, 41, 119, 0.2);
   color: var(--color-text-primary);
 }
 
 /* Focus Styles */
 :focus-visible {
-  outline: 2px solid var(--color-child-primary);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -161,28 +184,43 @@ a {
 }
 
 /* Utility Classes */
+.text-gradient-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-secondary {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Keep old classes for backwards compat */
 .text-gradient-blue {
-  background: var(--gradient-child);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-yellow {
-  background: var(--gradient-parent);
+  background: var(--gradient-secondary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .glass {
-  background: rgba(26, 26, 26, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 .glass-subtle {
-  background: rgba(26, 26, 26, 0.4);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -258,7 +296,7 @@ a {
 
 /* Chart Tooltip */
 .chart-tooltip {
-  background: var(--color-base-700) !important;
+  background: var(--color-base-900) !important;
   border: 1px solid var(--color-border) !important;
   border-radius: var(--radius-lg) !important;
   box-shadow: var(--shadow-lg) !important;
@@ -276,12 +314,21 @@ a {
 }
 
 /* Glow effects */
+.glow-primary {
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.glow-secondary {
+  box-shadow: var(--shadow-glow-secondary);
+}
+
+/* Keep old classes for backwards compat */
 .glow-blue {
-  box-shadow: var(--shadow-glow-blue);
+  box-shadow: var(--shadow-glow-primary);
 }
 
 .glow-yellow {
-  box-shadow: var(--shadow-glow-yellow);
+  box-shadow: var(--shadow-glow-secondary);
 }
 
 /* Number formatting for financial data */
@@ -339,7 +386,7 @@ button:disabled {
 /* Input base styles */
 input, textarea, select {
   font-family: inherit;
-  background: var(--color-base-700);
+  background: var(--color-base-900);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   color: var(--color-text-primary);
@@ -349,8 +396,8 @@ input, textarea, select {
 
 input:focus, textarea:focus, select:focus {
   outline: none;
-  border-color: var(--color-child-primary);
-  box-shadow: 0 0 0 3px var(--color-child-muted);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-muted);
 }
 
 input::placeholder, textarea::placeholder {
@@ -382,7 +429,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background-color: var(--color-base-800);
+  background-color: var(--color-base-700);
 }
 
 /* Badge styles */
@@ -410,23 +457,34 @@ tbody tr:hover {
   color: var(--color-warning);
 }
 
+.badge-primary {
+  background: var(--color-primary-muted);
+  color: var(--color-primary);
+}
+
+.badge-secondary {
+  background: var(--color-secondary-muted);
+  color: var(--color-secondary);
+}
+
+/* Keep old classes */
 .badge-blue {
-  background: var(--color-child-muted);
-  color: var(--color-child-light);
+  background: var(--color-primary-muted);
+  color: var(--color-primary);
 }
 
 .badge-yellow {
-  background: var(--color-parent-muted);
-  color: var(--color-parent-light);
+  background: var(--color-secondary-muted);
+  color: var(--color-secondary);
 }
 
 /* Skeleton loading */
 .skeleton {
   background: linear-gradient(
     90deg,
-    var(--color-base-700) 0%,
-    var(--color-base-600) 50%,
-    var(--color-base-700) 100%
+    var(--color-base-600) 0%,
+    var(--color-base-500) 50%,
+    var(--color-base-600) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
@@ -443,14 +501,14 @@ tbody tr:hover {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   z-index: 40;
 }
 
 /* Toast notifications */
 .toast {
-  background: var(--color-base-700);
+  background: var(--color-base-900);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: 1rem 1.5rem;
@@ -471,15 +529,16 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background: var(--color-child-primary);
-  border-color: var(--color-child-primary);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 /* Range slider */
 input[type="range"] {
   -webkit-appearance: none;
+  appearance: none;
   height: 8px;
-  background: var(--color-base-600);
+  background: var(--color-base-500);
   border-radius: var(--radius-full);
   border: none;
   padding: 0;
@@ -489,7 +548,7 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 20px;
   height: 20px;
-  background: var(--color-child-primary);
+  background: var(--color-primary);
   border-radius: 50%;
   cursor: pointer;
   transition: transform var(--transition-fast);
@@ -508,4 +567,5 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }

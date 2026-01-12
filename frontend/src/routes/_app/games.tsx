@@ -31,9 +31,9 @@ const games = [
 		difficulty: "Easy",
 		playTime: "5 min",
 		xpReward: 50,
-		color: "from-[#22C55E] to-[#16A34A]",
+		color: "from-[#16a34a] to-[#15803d]",
 		available: true,
-		highScore: 850,
+		highScore: null,
 	},
 	{
 		id: "portfolio-challenge",
@@ -44,9 +44,9 @@ const games = [
 		difficulty: "Medium",
 		playTime: "15 min",
 		xpReward: 150,
-		color: "from-[#3B82F6] to-[#2563EB]",
+		color: "from-[#482977] to-[#6b42a1]",
 		available: true,
-		highScore: 1200,
+		highScore: null,
 	},
 	{
 		id: "market-mayhem",
@@ -57,7 +57,7 @@ const games = [
 		difficulty: "Hard",
 		playTime: "10 min",
 		xpReward: 200,
-		color: "from-[#EF4444] to-[#DC2626]",
+		color: "from-[#dc2626] to-[#b91c1c]",
 		available: false,
 		highScore: null,
 	},
@@ -70,7 +70,7 @@ const games = [
 		difficulty: "Expert",
 		playTime: "30 min",
 		xpReward: 500,
-		color: "from-[#8B5CF6] to-[#7C3AED]",
+		color: "from-[#c22f99] to-[#9a2579]",
 		available: false,
 		highScore: null,
 	},
@@ -126,9 +126,9 @@ function StockPredictionGame({ onClose }: { onClose: () => void }) {
 		return (
 			<div className="text-center py-8">
 				<div className="text-6xl mb-4">🎉</div>
-				<h3 className="text-2xl font-bold text-white mb-2">Game Over!</h3>
-				<p className="text-4xl font-bold text-[#FBBF24] mb-4">{score} pts</p>
-				<p className="text-[#6a6a6a] mb-6">You completed {maxRounds} rounds</p>
+				<h3 className="text-2xl font-bold text-[#1a1a2e] mb-2">Game Over!</h3>
+				<p className="text-4xl font-bold text-[#c22f99] mb-4">{score} pts</p>
+				<p className="text-[#7a8aa3] mb-6">You completed {maxRounds} rounds</p>
 				<div className="flex justify-center gap-4">
 					<Button variant="secondary" onClick={onClose}>
 						Exit
@@ -156,13 +156,13 @@ function StockPredictionGame({ onClose }: { onClose: () => void }) {
 			{/* Game Header */}
 			<div className="flex items-center justify-between">
 				<div>
-					<p className="text-[#6a6a6a] text-sm">
+					<p className="text-[#7a8aa3] text-sm">
 						Round {round} of {maxRounds}
 					</p>
 					<div className="flex items-center gap-4">
-						<p className="text-2xl font-bold text-white">{score} pts</p>
+						<p className="text-2xl font-bold text-[#1a1a2e]">{score} pts</p>
 						{streak > 1 && (
-							<span className="px-2 py-1 rounded-lg bg-[#FBBF24]/20 text-[#FBBF24] text-sm font-medium">
+							<span className="px-2 py-1 rounded-lg bg-[#c22f99]/10 text-[#c22f99] text-sm font-medium">
 								🔥 {streak}x streak
 							</span>
 						)}
@@ -174,16 +174,16 @@ function StockPredictionGame({ onClose }: { onClose: () => void }) {
 			</div>
 
 			{/* Stock Display */}
-			<div className="bg-[#121212] rounded-2xl p-8 text-center">
-				<p className="text-[#6a6a6a] mb-2">{stockSymbol}</p>
+			<div className="bg-[#f8f9fc] rounded-2xl p-8 text-center">
+				<p className="text-[#7a8aa3] mb-2">{stockSymbol}</p>
 				<p
 					className={clsx(
 						"text-5xl font-bold font-mono mb-4 transition-colors duration-500",
 						result === "correct"
-							? "text-[#22C55E]"
+							? "text-[#16a34a]"
 							: result === "wrong"
-								? "text-[#EF4444]"
-								: "text-white",
+								? "text-[#dc2626]"
+								: "text-[#1a1a2e]",
 					)}
 				>
 					${currentPrice.toFixed(2)}
@@ -194,10 +194,10 @@ function StockPredictionGame({ onClose }: { onClose: () => void }) {
 						className={clsx(
 							"text-lg font-medium",
 							result === "correct"
-								? "text-[#22C55E]"
+								? "text-[#16a34a]"
 								: result === "wrong"
-									? "text-[#EF4444]"
-									: "text-[#6a6a6a]",
+									? "text-[#dc2626]"
+									: "text-[#7a8aa3]",
 						)}
 					>
 						{result === "correct"
@@ -214,23 +214,23 @@ function StockPredictionGame({ onClose }: { onClose: () => void }) {
 				<div className="grid grid-cols-2 gap-4">
 					<button
 						onClick={() => handlePrediction("up")}
-						className="p-8 rounded-2xl bg-[#22C55E]/20 border-2 border-[#22C55E]/30 hover:border-[#22C55E] hover:bg-[#22C55E]/30 transition-all group"
+						className="p-8 rounded-2xl bg-[#16a34a]/10 border-2 border-[#16a34a]/30 hover:border-[#16a34a] hover:bg-[#16a34a]/20 transition-all group"
 					>
-						<TrendingUp className="w-12 h-12 mx-auto text-[#22C55E] group-hover:scale-110 transition-transform" />
-						<p className="text-[#22C55E] font-semibold mt-2">Goes Up</p>
+						<TrendingUp className="w-12 h-12 mx-auto text-[#16a34a] group-hover:scale-110 transition-transform" />
+						<p className="text-[#16a34a] font-semibold mt-2">Goes Up</p>
 					</button>
 					<button
 						onClick={() => handlePrediction("down")}
-						className="p-8 rounded-2xl bg-[#EF4444]/20 border-2 border-[#EF4444]/30 hover:border-[#EF4444] hover:bg-[#EF4444]/30 transition-all group"
+						className="p-8 rounded-2xl bg-[#dc2626]/10 border-2 border-[#dc2626]/30 hover:border-[#dc2626] hover:bg-[#dc2626]/20 transition-all group"
 					>
-						<TrendingDown className="w-12 h-12 mx-auto text-[#EF4444] group-hover:scale-110 transition-transform" />
-						<p className="text-[#EF4444] font-semibold mt-2">Goes Down</p>
+						<TrendingDown className="w-12 h-12 mx-auto text-[#dc2626] group-hover:scale-110 transition-transform" />
+						<p className="text-[#dc2626] font-semibold mt-2">Goes Down</p>
 					</button>
 				</div>
 			)}
 
 			{/* Instructions */}
-			<p className="text-center text-[#6a6a6a] text-sm">
+			<p className="text-center text-[#7a8aa3] text-sm">
 				Predict if the stock price will go up or down. Correct guesses earn
 				points!
 			</p>
@@ -265,10 +265,10 @@ function GameCard({
 					<span
 						className={clsx(
 							"px-2 py-1 rounded-lg text-xs font-medium",
-							game.difficulty === "Easy" && "bg-[#22C55E]/10 text-[#22C55E]",
-							game.difficulty === "Medium" && "bg-[#FBBF24]/10 text-[#FBBF24]",
-							game.difficulty === "Hard" && "bg-[#EF4444]/10 text-[#EF4444]",
-							game.difficulty === "Expert" && "bg-[#8B5CF6]/10 text-[#8B5CF6]",
+							game.difficulty === "Easy" && "bg-[#16a34a]/10 text-[#16a34a]",
+							game.difficulty === "Medium" && "bg-[#c22f99]/10 text-[#c22f99]",
+							game.difficulty === "Hard" && "bg-[#dc2626]/10 text-[#dc2626]",
+							game.difficulty === "Expert" && "bg-[#482977]/10 text-[#482977]",
 						)}
 					>
 						{game.difficulty}
@@ -276,10 +276,10 @@ function GameCard({
 				</div>
 			</div>
 
-			<h3 className="font-semibold text-white text-lg mb-2">{game.title}</h3>
-			<p className="text-[#6a6a6a] text-sm mb-4">{game.description}</p>
+			<h3 className="font-semibold text-[#1a1a2e] text-lg mb-2">{game.title}</h3>
+			<p className="text-[#7a8aa3] text-sm mb-4">{game.description}</p>
 
-			<div className="flex items-center gap-4 text-sm text-[#6a6a6a] mb-4">
+			<div className="flex items-center gap-4 text-sm text-[#7a8aa3] mb-4">
 				<div className="flex items-center gap-1">
 					<Clock className="w-4 h-4" />
 					<span>{game.playTime}</span>
@@ -291,9 +291,9 @@ function GameCard({
 			</div>
 
 			{game.highScore && (
-				<div className="flex items-center gap-2 mb-4 px-3 py-2 bg-[#FBBF24]/10 rounded-lg">
-					<Trophy className="w-4 h-4 text-[#FBBF24]" />
-					<span className="text-[#FBBF24] text-sm font-medium">
+				<div className="flex items-center gap-2 mb-4 px-3 py-2 bg-[#c22f99]/10 rounded-lg">
+					<Trophy className="w-4 h-4 text-[#c22f99]" />
+					<span className="text-[#c22f99] text-sm font-medium">
 						High Score: {game.highScore}
 					</span>
 				</div>
@@ -315,16 +315,13 @@ function GamesPage() {
 	const { user } = useAuth();
 	const [activeGame, setActiveGame] = useState<string | null>(null);
 
-	// Calculate total XP from games
-	const totalGamesXP = 450; // Mock value
-
 	return (
 		<div className="space-y-8 animate-fade-in">
 			{/* Header */}
 			<div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
 				<div>
-					<h1 className="text-3xl font-bold text-white mb-1">Games</h1>
-					<p className="text-[#6a6a6a]">
+					<h1 className="text-3xl font-bold text-[#1a1a2e] mb-1">Games</h1>
+					<p className="text-[#7a8aa3]">
 						Learn investing through fun, interactive games
 					</p>
 				</div>
@@ -332,38 +329,38 @@ function GamesPage() {
 
 			{/* Stats Cards */}
 			<div className="grid md:grid-cols-3 gap-4">
-				<Card className="bg-gradient-to-br from-[#FBBF24]/10 to-[#F59E0B]/5 border-[#FBBF24]/30">
+				<Card className="bg-gradient-to-br from-[#c22f99]/5 to-[#9a2579]/5 border-[#c22f99]/20">
 					<div className="flex items-center gap-4">
-						<div className="w-12 h-12 rounded-xl bg-[#FBBF24]/20 flex items-center justify-center">
-							<Trophy className="w-6 h-6 text-[#FBBF24]" />
+						<div className="w-12 h-12 rounded-xl bg-[#c22f99]/10 flex items-center justify-center">
+							<Trophy className="w-6 h-6 text-[#c22f99]" />
 						</div>
 						<div>
-							<p className="text-[#6a6a6a] text-sm">Total XP Earned</p>
-							<p className="text-2xl font-bold text-white">{totalGamesXP}</p>
+							<p className="text-[#7a8aa3] text-sm">Total XP Earned</p>
+							<p className="text-2xl font-bold text-[#1a1a2e]">0</p>
 						</div>
 					</div>
 				</Card>
 
 				<Card>
 					<div className="flex items-center gap-4">
-						<div className="w-12 h-12 rounded-xl bg-[#3B82F6]/20 flex items-center justify-center">
-							<Gamepad2 className="w-6 h-6 text-[#60A5FA]" />
+						<div className="w-12 h-12 rounded-xl bg-[#482977]/10 flex items-center justify-center">
+							<Gamepad2 className="w-6 h-6 text-[#482977]" />
 						</div>
 						<div>
-							<p className="text-[#6a6a6a] text-sm">Games Played</p>
-							<p className="text-2xl font-bold text-white">12</p>
+							<p className="text-[#7a8aa3] text-sm">Games Played</p>
+							<p className="text-2xl font-bold text-[#1a1a2e]">0</p>
 						</div>
 					</div>
 				</Card>
 
 				<Card>
 					<div className="flex items-center gap-4">
-						<div className="w-12 h-12 rounded-xl bg-[#22C55E]/20 flex items-center justify-center">
-							<Target className="w-6 h-6 text-[#22C55E]" />
+						<div className="w-12 h-12 rounded-xl bg-[#16a34a]/10 flex items-center justify-center">
+							<Target className="w-6 h-6 text-[#16a34a]" />
 						</div>
 						<div>
-							<p className="text-[#6a6a6a] text-sm">Win Rate</p>
-							<p className="text-2xl font-bold text-white">72%</p>
+							<p className="text-[#7a8aa3] text-sm">Win Rate</p>
+							<p className="text-2xl font-bold text-[#1a1a2e]">--</p>
 						</div>
 					</div>
 				</Card>
@@ -373,20 +370,20 @@ function GamesPage() {
 			{activeGame && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
 					<div
-						className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+						className="absolute inset-0 bg-black/40 backdrop-blur-sm"
 						onClick={() => setActiveGame(null)}
 					/>
-					<div className="relative bg-[#0a0a0a] rounded-2xl border border-[#2a2a2a] w-full max-w-lg p-6 animate-scale-in">
+					<div className="relative bg-white rounded-2xl border border-[#482977]/10 w-full max-w-lg p-6 animate-scale-in shadow-xl">
 						{activeGame === "stock-prediction" && (
 							<StockPredictionGame onClose={() => setActiveGame(null)} />
 						)}
 						{activeGame === "portfolio-challenge" && (
 							<div className="text-center py-12">
 								<div className="text-5xl mb-4">🚧</div>
-								<h3 className="text-xl font-bold text-white mb-2">
+								<h3 className="text-xl font-bold text-[#1a1a2e] mb-2">
 									Coming Soon!
 								</h3>
-								<p className="text-[#6a6a6a] mb-6">
+								<p className="text-[#7a8aa3] mb-6">
 									This game is under development.
 								</p>
 								<Button onClick={() => setActiveGame(null)}>Close</Button>
@@ -398,7 +395,7 @@ function GamesPage() {
 
 			{/* Games Grid */}
 			<div>
-				<h2 className="text-xl font-bold text-white mb-6">Available Games</h2>
+				<h2 className="text-xl font-bold text-[#1a1a2e] mb-6">Available Games</h2>
 				<div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
 					{games.map((game) => (
 						<GameCard
@@ -411,14 +408,14 @@ function GamesPage() {
 			</div>
 
 			{/* Tips Section */}
-			<Card className="bg-gradient-to-r from-[#3B82F6]/10 to-transparent border-[#3B82F6]/30">
+			<Card className="bg-gradient-to-r from-[#482977]/5 to-transparent border-[#482977]/20">
 				<div className="flex items-start gap-4">
-					<div className="w-10 h-10 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
-						<Zap className="w-5 h-5 text-[#60A5FA]" />
+					<div className="w-10 h-10 rounded-full bg-[#482977]/10 flex items-center justify-center flex-shrink-0">
+						<Zap className="w-5 h-5 text-[#482977]" />
 					</div>
 					<div>
-						<h3 className="font-semibold text-white mb-2">Pro Tip</h3>
-						<p className="text-[#9a9a9a] text-sm leading-relaxed">
+						<h3 className="font-semibold text-[#1a1a2e] mb-2">Pro Tip</h3>
+						<p className="text-[#566279] text-sm leading-relaxed">
 							Playing games regularly helps reinforce your investing knowledge!
 							Each game teaches different skills - Stock Predictor helps with
 							market intuition, while Portfolio Challenge teaches

@@ -49,7 +49,7 @@ export function AIAssistant() {
 	const { user } = useAuth();
 
 	const isParent = user?.accountType === "parent";
-	const accentColor = isParent ? "yellow" : "blue";
+	const accentColor = isParent ? "parent" : "primary";
 	const placeholder =
 		placeholderByPath[location.pathname] ||
 		"Ask me anything about investing...";
@@ -97,9 +97,9 @@ export function AIAssistant() {
 					"shadow-lg transition-all duration-300",
 					"hover:scale-110 active:scale-95",
 					isOpen && "rotate-180",
-					accentColor === "yellow"
-						? "bg-gradient-to-br from-[#FBBF24] to-[#F59E0B] shadow-yellow-500/30"
-						: "bg-gradient-to-br from-[#3B82F6] to-[#2563EB] shadow-blue-500/30",
+					accentColor === "parent"
+						? "bg-gradient-to-br from-[var(--color-parent-light)] to-[var(--color-parent-primary)] shadow-[var(--color-parent-primary)]/30"
+						: "bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] shadow-[var(--color-primary)]/30",
 				)}
 				aria-label={isOpen ? "Close assistant" : "Open assistant"}
 			>
@@ -117,9 +117,9 @@ export function AIAssistant() {
 						"fixed bottom-24 right-6 z-40",
 						"w-[calc(100vw-3rem)] sm:w-[400px] h-[500px]",
 						"max-w-[400px]",
-						"bg-[#0a0a0a] rounded-2xl",
-						"border border-[#2a2a2a]",
-						"shadow-2xl shadow-black/50",
+						"bg-[var(--color-base-900)] rounded-2xl",
+						"border border-[var(--color-border)]",
+						"shadow-2xl",
 						"flex flex-col",
 						"animate-slide-up",
 					)}
@@ -128,27 +128,27 @@ export function AIAssistant() {
 					<div
 						className={clsx(
 							"flex items-center gap-3 px-4 py-3",
-							"border-b border-[#2a2a2a]",
+							"border-b border-[var(--color-border)]",
 							"bg-gradient-to-r",
-							accentColor === "yellow"
-								? "from-[#FBBF24]/10 to-transparent"
-								: "from-[#3B82F6]/10 to-transparent",
+							accentColor === "parent"
+								? "from-[var(--color-parent-muted)] to-transparent"
+								: "from-[var(--color-primary-muted)] to-transparent",
 						)}
 					>
 						<div
 							className={clsx(
 								"w-10 h-10 rounded-full flex items-center justify-center",
 								"bg-gradient-to-br",
-								accentColor === "yellow"
-									? "from-[#FBBF24] to-[#F59E0B]"
-									: "from-[#3B82F6] to-[#2563EB]",
+								accentColor === "parent"
+									? "from-[var(--color-parent-light)] to-[var(--color-parent-primary)]"
+									: "from-[var(--color-primary)] to-[var(--color-secondary)]",
 							)}
 						>
 							<Sparkles className="w-5 h-5 text-white" />
 						</div>
 						<div>
-							<h3 className="font-semibold text-white">Sparky</h3>
-							<p className="text-xs text-[#6a6a6a]">Your investing assistant</p>
+							<h3 className="font-semibold text-[var(--color-text-primary)]">Sparky</h3>
+							<p className="text-xs text-[var(--color-text-muted)]">Your investing assistant</p>
 						</div>
 					</div>
 
@@ -168,11 +168,11 @@ export function AIAssistant() {
 										message.role === "user"
 											? clsx(
 													"rounded-br-md",
-													accentColor === "yellow"
-														? "bg-[#FBBF24] text-[#0a0a0a]"
-														: "bg-[#3B82F6] text-white",
+													accentColor === "parent"
+														? "bg-[var(--color-parent-primary)] text-white"
+														: "bg-[var(--color-primary)] text-white",
 												)
-											: "bg-[#1a1a1a] text-[#e0e0e0] rounded-bl-md",
+											: "bg-[var(--color-base-700)] text-[var(--color-text-primary)] rounded-bl-md",
 									)}
 								>
 									<p className="text-sm leading-relaxed">{message.content}</p>
@@ -182,7 +182,7 @@ export function AIAssistant() {
 					</div>
 
 					{/* Input */}
-					<div className="p-4 border-t border-[#2a2a2a]">
+					<div className="p-4 border-t border-[var(--color-border)]">
 						<form
 							onSubmit={(e) => {
 								e.preventDefault();
@@ -197,9 +197,9 @@ export function AIAssistant() {
 								placeholder={placeholder}
 								className={clsx(
 									"flex-1 px-4 py-3",
-									"bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl",
-									"text-white placeholder-[#4a4a4a]",
-									"focus:outline-none focus:border-[#3a3a3a]",
+									"bg-[var(--color-base-800)] border border-[var(--color-border)] rounded-xl",
+									"text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]",
+									"focus:outline-none focus:border-[var(--color-primary)]",
 									"text-sm",
 								)}
 							/>
@@ -211,16 +211,16 @@ export function AIAssistant() {
 									"transition-all duration-200",
 									"disabled:opacity-50 disabled:cursor-not-allowed",
 									input.trim()
-										? accentColor === "yellow"
-											? "bg-[#FBBF24] text-[#0a0a0a] hover:bg-[#FCD34D]"
-											: "bg-[#3B82F6] text-white hover:bg-[#60A5FA]"
-										: "bg-[#2a2a2a] text-[#6a6a6a]",
+										? accentColor === "parent"
+											? "bg-[var(--color-parent-primary)] text-white hover:bg-[var(--color-parent-light)]"
+											: "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-light)]"
+										: "bg-[var(--color-base-700)] text-[var(--color-text-muted)]",
 								)}
 							>
 								<Send className="w-5 h-5" />
 							</button>
 						</form>
-						<p className="text-xs text-[#4a4a4a] mt-2 text-center">
+						<p className="text-xs text-[var(--color-text-muted)] mt-2 text-center">
 							{/* TODO: Integrate real AI backend here */}
 							AI features coming soon • Currently using placeholder responses
 						</p>

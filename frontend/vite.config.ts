@@ -17,6 +17,8 @@ const config = defineConfig({
   ],
   server: {
     port: 7823,
+    host: true,
+    allowedHosts: ["aspire.fraimer.dev", ".fraimer.dev"],
   },
 });
 

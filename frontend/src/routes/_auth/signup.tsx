@@ -1,3 +1,5 @@
+import { useForm } from "@tanstack/react-form";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import {
@@ -9,12 +11,10 @@ import {
   Users,
 } from "lucide-react";
 import { useState } from "react";
+import { z } from "zod";
+import { authClient } from "@/lib/auth";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
-import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth";
-import { z } from "zod";
 
 export const Route = createFileRoute("/_auth/signup")({
   component: SignupPage,
@@ -22,11 +22,11 @@ export const Route = createFileRoute("/_auth/signup")({
 
 type SignupStep = "account-type" | "details";
 
-type AccountType = "parent" | "child";
+type AccountType = "PARENT" | "CHILD";
 
 function SignupPage() {
   const [step, setStep] = useState<SignupStep>("account-type");
-  const [accountType, setAccountType] = useState<AccountType | null>(null);
+  const [accountType, setAccountType] = useState<AccountType>("CHILD");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -41,6 +41,7 @@ function SignupPage() {
       name: string;
       email: string;
       password: string;
+      role: AccountType;
     }) =>
       await authClient.signUp.email(
         {
@@ -69,6 +70,7 @@ function SignupPage() {
         name: value.name,
         email: value.email,
         password: value.password,
+        role: accountType,
       });
     },
     validators: {
@@ -84,20 +86,24 @@ function SignupPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#f8f9fc] flex items-center justify-center p-6">
       <div className="w-full max-w-2xl relative z-10">
-        <div className="flex items-center gap-3 mb-8 justify-center">
-          <span className="text-3xl font-bold text-white">Aspire</span>
+        <div className="flex items-center justify-center mb-8">
+          <img
+            src="/aspire-logo.png"
+            alt="Aspire - Achieving Success through Personal Investment, Resources and Education"
+            className="h-14 w-auto"
+          />
         </div>
 
         {/* Account Type Selection Step */}
         {step === "account-type" && (
           <div className="animate-fade-in">
             <div className="text-center mb-10">
-              <h1 className="text-3xl font-bold text-white mb-3">
+              <h1 className="text-3xl font-bold text-[#1a1a2e] mb-3">
                 Create your account
               </h1>
-              <p className="text-[#6a6a6a]">
+              <p className="text-[#7a8aa3]">
                 Choose your account type to get started
               </p>
             </div>
@@ -106,47 +112,47 @@ function SignupPage() {
               {/* Parent Account Card */}
               <button
                 type="button"
-                onClick={() => handleAccountTypeSelect("parent")}
+                onClick={() => handleAccountTypeSelect("PARENT")}
                 className={clsx(
                   "relative p-8 rounded-2xl text-left transition-all duration-300",
-                  "bg-[#1a1a1a] border-2",
-                  "hover:border-[#FBBF24] hover:shadow-lg hover:shadow-[#FBBF24]/10",
+                  "bg-white border-2 shadow-sm",
+                  "hover:border-[#c22f99] hover:shadow-lg hover:shadow-[#c22f99]/10",
                   "hover:-translate-y-1",
                   "group",
-                  "border-[#2a2a2a]",
+                  "border-[#482977]/10",
                 )}
               >
                 <div
                   className={clsx(
                     "w-16 h-16 rounded-2xl mb-6 flex items-center justify-center",
-                    "bg-linear-to-br from-[#FBBF24]/20 to-[#F59E0B]/20",
-                    "group-hover:from-[#FBBF24] group-hover:to-[#F59E0B]",
+                    "bg-gradient-to-br from-[#c22f99]/10 to-[#9a2579]/10",
+                    "group-hover:from-[#c22f99] group-hover:to-[#9a2579]",
                     "transition-all duration-300",
                   )}
                 >
                   <Users
                     className={clsx(
                       "w-8 h-8",
-                      "text-[#FBBF24] group-hover:text-white",
+                      "text-[#c22f99] group-hover:text-white",
                       "transition-colors duration-300",
                     )}
                   />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">
+                <h3 className="text-xl font-bold text-[#1a1a2e] mb-2">
                   Parent Account
                 </h3>
-                <p className="text-[#6a6a6a] text-sm leading-relaxed mb-4">
+                <p className="text-[#7a8aa3] text-sm leading-relaxed mb-4">
                   Monitor and guide your children's investment learning journey.
                   Set up child accounts and track progress.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 rounded-full bg-[#FBBF24]/10 text-[#FBBF24] text-xs font-medium">
+                  <span className="px-3 py-1 rounded-full bg-[#c22f99]/10 text-[#c22f99] text-xs font-medium">
                     Oversight
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-[#FBBF24]/10 text-[#FBBF24] text-xs font-medium">
+                  <span className="px-3 py-1 rounded-full bg-[#c22f99]/10 text-[#c22f99] text-xs font-medium">
                     Controls
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-[#FBBF24]/10 text-[#FBBF24] text-xs font-medium">
+                  <span className="px-3 py-1 rounded-full bg-[#c22f99]/10 text-[#c22f99] text-xs font-medium">
                     Reports
                   </span>
                 </div>
@@ -154,58 +160,58 @@ function SignupPage() {
                   className={clsx(
                     "absolute top-4 right-4 w-8 h-8 rounded-full",
                     "flex items-center justify-center",
-                    "bg-[#FBBF24]/0 group-hover:bg-[#FBBF24]",
+                    "bg-[#c22f99]/0 group-hover:bg-[#c22f99]",
                     "transition-all duration-300",
                   )}
                 >
-                  <ArrowRight className="w-4 h-4 text-[#FBBF24] group-hover:text-white transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-[#c22f99] group-hover:text-white transition-colors" />
                 </div>
               </button>
 
               {/* Child Account Card */}
               <button
                 type="button"
-                onClick={() => handleAccountTypeSelect("child")}
+                onClick={() => handleAccountTypeSelect("CHILD")}
                 className={clsx(
                   "relative p-8 rounded-2xl text-left transition-all duration-300",
-                  "bg-[#1a1a1a] border-2",
-                  "hover:border-[#3B82F6] hover:shadow-lg hover:shadow-[#3B82F6]/10",
+                  "bg-white border-2 shadow-sm",
+                  "hover:border-[#482977] hover:shadow-lg hover:shadow-[#482977]/10",
                   "hover:-translate-y-1",
                   "group",
-                  "border-[#2a2a2a]",
+                  "border-[#482977]/10",
                 )}
               >
                 <div
                   className={clsx(
                     "w-16 h-16 rounded-2xl mb-6 flex items-center justify-center",
-                    "bg-linear-to-br from-[#3B82F6]/20 to-[#2563EB]/20",
-                    "group-hover:from-[#3B82F6] group-hover:to-[#2563EB]",
+                    "bg-gradient-to-br from-[#482977]/10 to-[#6b42a1]/10",
+                    "group-hover:from-[#482977] group-hover:to-[#6b42a1]",
                     "transition-all duration-300",
                   )}
                 >
                   <GraduationCap
                     className={clsx(
                       "w-8 h-8",
-                      "text-[#60A5FA] group-hover:text-white",
+                      "text-[#482977] group-hover:text-white",
                       "transition-colors duration-300",
                     )}
                   />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">
+                <h3 className="text-xl font-bold text-[#1a1a2e] mb-2">
                   Student Account
                 </h3>
-                <p className="text-[#6a6a6a] text-sm leading-relaxed mb-4">
+                <p className="text-[#7a8aa3] text-sm leading-relaxed mb-4">
                   Start your investing journey with virtual money. Learn through
                   games, guides, and real market simulations.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 rounded-full bg-[#3B82F6]/10 text-[#60A5FA] text-xs font-medium">
+                  <span className="px-3 py-1 rounded-full bg-[#482977]/10 text-[#482977] text-xs font-medium">
                     Learn
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-[#3B82F6]/10 text-[#60A5FA] text-xs font-medium">
+                  <span className="px-3 py-1 rounded-full bg-[#482977]/10 text-[#482977] text-xs font-medium">
                     Trade
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-[#3B82F6]/10 text-[#60A5FA] text-xs font-medium">
+                  <span className="px-3 py-1 rounded-full bg-[#482977]/10 text-[#482977] text-xs font-medium">
                     Compete
                   </span>
                 </div>
@@ -213,21 +219,21 @@ function SignupPage() {
                   className={clsx(
                     "absolute top-4 right-4 w-8 h-8 rounded-full",
                     "flex items-center justify-center",
-                    "bg-[#3B82F6]/0 group-hover:bg-[#3B82F6]",
+                    "bg-[#482977]/0 group-hover:bg-[#482977]",
                     "transition-all duration-300",
                   )}
                 >
-                  <ArrowRight className="w-4 h-4 text-[#60A5FA] group-hover:text-white transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-[#482977] group-hover:text-white transition-colors" />
                 </div>
               </button>
             </div>
 
             <div className="mt-8 text-center">
-              <p className="text-[#6a6a6a]">
+              <p className="text-[#7a8aa3]">
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-[#60A5FA] font-semibold hover:text-[#3B82F6] transition-colors"
+                  className="text-[#482977] font-semibold hover:text-[#6b42a1] transition-colors"
                 >
                   Sign In
                 </Link>
@@ -242,7 +248,7 @@ function SignupPage() {
             <button
               type="button"
               onClick={() => setStep("account-type")}
-              className="flex items-center gap-2 text-[#6a6a6a] hover:text-white transition-colors mb-6"
+              className="flex items-center gap-2 text-[#7a8aa3] hover:text-[#1a1a2e] transition-colors mb-6"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to account type</span>
@@ -252,22 +258,22 @@ function SignupPage() {
               <div
                 className={clsx(
                   "p-1 rounded-2xl mb-8",
-                  accountType === "parent"
-                    ? "bg-linear-to-r from-[#FBBF24]/30 to-[#F59E0B]/30"
-                    : "bg-linear-to-r from-[#3B82F6]/30 to-[#2563EB]/30",
+                  accountType === "PARENT"
+                    ? "bg-gradient-to-r from-[#c22f99]/20 to-[#9a2579]/20"
+                    : "bg-gradient-to-r from-[#482977]/20 to-[#6b42a1]/20",
                 )}
               >
-                <div className="bg-[#0a0a0a] rounded-xl p-4 flex items-center gap-4">
+                <div className="bg-white rounded-xl p-4 flex items-center gap-4">
                   <div
                     className={clsx(
                       "w-12 h-12 rounded-xl flex items-center justify-center",
-                      "bg-linear-to-br",
-                      accountType === "parent"
-                        ? "from-[#FBBF24] to-[#F59E0B]"
-                        : "from-[#3B82F6] to-[#2563EB]",
+                      "bg-gradient-to-br",
+                      accountType === "PARENT"
+                        ? "from-[#c22f99] to-[#9a2579]"
+                        : "from-[#482977] to-[#6b42a1]",
                     )}
                   >
-                    {accountType === "parent" ? (
+                    {accountType === "PARENT" ? (
                       <Users className="w-6 h-6 text-white" />
                     ) : (
                       <GraduationCap className="w-6 h-6 text-white" />
@@ -277,16 +283,16 @@ function SignupPage() {
                     <p
                       className={clsx(
                         "font-semibold",
-                        accountType === "parent"
-                          ? "text-[#FBBF24]"
-                          : "text-[#60A5FA]",
+                        accountType === "PARENT"
+                          ? "text-[#c22f99]"
+                          : "text-[#482977]",
                       )}
                     >
-                      {accountType === "parent"
+                      {accountType === "PARENT"
                         ? "Parent Account"
                         : "Student Account"}
                     </p>
-                    <p className="text-sm text-[#6a6a6a]">
+                    <p className="text-sm text-[#7a8aa3]">
                       Complete your registration
                     </p>
                   </div>
@@ -310,11 +316,16 @@ function SignupPage() {
                         placeholder="Enter your full name"
                         value={field.state.value}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        accent={accountType === "parent" ? "yellow" : "blue"}
+                        accent={
+                          accountType === "PARENT" ? "secondary" : "primary"
+                        }
                         required
                       />
                       {field.state.meta.errors.map((error) => (
-                        <p key={error?.message} className="text-red-500">
+                        <p
+                          key={error?.message}
+                          className="text-[#dc2626] text-sm"
+                        >
                           {error?.message}
                         </p>
                       ))}
@@ -331,11 +342,16 @@ function SignupPage() {
                         placeholder="Enter your email"
                         value={field.state.value}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        accent={accountType === "parent" ? "yellow" : "blue"}
+                        accent={
+                          accountType === "PARENT" ? "secondary" : "primary"
+                        }
                         required
                       />
                       {field.state.meta.errors.map((error) => (
-                        <p key={error?.message} className="text-red-500">
+                        <p
+                          key={error?.message}
+                          className="text-[#dc2626] text-sm"
+                        >
                           {error?.message}
                         </p>
                       ))}
@@ -356,7 +372,7 @@ function SignupPage() {
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="hover:text-white transition-colors"
+                            className="hover:text-[#482977] transition-colors"
                           >
                             {showPassword ? (
                               <EyeOff className="w-5 h-5" />
@@ -365,11 +381,16 @@ function SignupPage() {
                             )}
                           </button>
                         }
-                        accent={accountType === "parent" ? "yellow" : "blue"}
+                        accent={
+                          accountType === "PARENT" ? "secondary" : "primary"
+                        }
                         required
                       />
                       {field.state.meta.errors.map((error) => (
-                        <p key={error?.message} className="text-red-500">
+                        <p
+                          key={error?.message}
+                          className="text-[#dc2626] text-sm"
+                        >
                           {error?.message}
                         </p>
                       ))}
@@ -386,11 +407,16 @@ function SignupPage() {
                         placeholder="Confirm your password"
                         value={field.state.value}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        accent={accountType === "parent" ? "yellow" : "blue"}
+                        accent={
+                          accountType === "PARENT" ? "secondary" : "primary"
+                        }
                         required
                       />
                       {field.state.meta.errors.map((error) => (
-                        <p key={error?.message} className="text-red-500">
+                        <p
+                          key={error?.message}
+                          className="text-[#dc2626] text-sm"
+                        >
                           {error?.message}
                         </p>
                       ))}
@@ -399,8 +425,8 @@ function SignupPage() {
                 </form.Field>
 
                 {error && (
-                  <div className="p-4 rounded-xl bg-[#EF4444]/10 border border-[#EF4444]/30">
-                    <p className="text-[#EF4444] text-sm">{error}</p>
+                  <div className="p-4 rounded-xl bg-[#dc2626]/10 border border-[#dc2626]/30">
+                    <p className="text-[#dc2626] text-sm">{error}</p>
                   </div>
                 )}
 
@@ -410,7 +436,9 @@ function SignupPage() {
                       type="submit"
                       fullWidth
                       size="lg"
-                      accent={accountType === "parent" ? "yellow" : "blue"}
+                      accent={
+                        accountType === "PARENT" ? "secondary" : "primary"
+                      }
                       isLoading={state.isSubmitting || isPending}
                       rightIcon={<ArrowRight className="w-5 h-5" />}
                     >
@@ -420,7 +448,7 @@ function SignupPage() {
                 </form.Subscribe>
               </form>
 
-              <p className="mt-6 text-xs text-[#4a4a4a] text-center leading-relaxed">
+              <p className="mt-6 text-xs text-[#a0aec4] text-center leading-relaxed">
                 By creating an account, you agree to help learn about financial
                 literacy and responsible investing through simulation.
               </p>

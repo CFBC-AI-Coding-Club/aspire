@@ -7,7 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	hint?: string;
 	leftIcon?: ReactNode;
 	rightIcon?: ReactNode;
-	accent?: "blue" | "yellow";
+	accent?: "blue" | "yellow" | "primary" | "secondary";
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 			hint,
 			leftIcon,
 			rightIcon,
-			accent = "blue",
+			accent = "primary",
 			className,
 			id,
 			...props
@@ -27,24 +27,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 	) => {
 		const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
 
-		const focusColor =
-			accent === "blue"
-				? "focus:border-[#3B82F6] focus:ring-[#3B82F6]/20"
-				: "focus:border-[#FBBF24] focus:ring-[#FBBF24]/20";
+		// Map old accent names to new colors
+		const isPrimary = accent === "blue" || accent === "primary";
+		const focusColor = isPrimary
+			? "focus:border-[#482977] focus:ring-[#482977]/20"
+			: "focus:border-[#c22f99] focus:ring-[#c22f99]/20";
 
 		return (
 			<div className="w-full">
 				{label && (
 					<label
 						htmlFor={inputId}
-						className="block text-sm font-medium text-[#e0e0e0] mb-2"
+						className="block text-sm font-medium text-[#1a1a2e] mb-2"
 					>
 						{label}
 					</label>
 				)}
 				<div className="relative">
 					{leftIcon && (
-						<div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6a6a6a]">
+						<div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a8aa3]">
 							{leftIcon}
 						</div>
 					)}
@@ -53,29 +54,29 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 						id={inputId}
 						className={clsx(
 							"w-full px-4 py-3",
-							"bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl",
-							"text-white placeholder-[#4a4a4a]",
+							"bg-white border border-[#482977]/15 rounded-xl",
+							"text-[#1a1a2e] placeholder-[#a0aec4]",
 							"transition-all duration-200",
 							"focus:outline-none focus:ring-4",
 							focusColor,
 							error &&
-								"border-[#EF4444] focus:border-[#EF4444] focus:ring-[#EF4444]/20",
+								"border-[#dc2626] focus:border-[#dc2626] focus:ring-[#dc2626]/20",
 							leftIcon && "pl-11",
 							rightIcon && "pr-11",
-							"disabled:opacity-50 disabled:cursor-not-allowed",
+							"disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[#f8f9fc]",
 							className,
 						)}
 						{...props}
 					/>
 					{rightIcon && (
-						<div className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6a6a6a]">
+						<div className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a8aa3]">
 							{rightIcon}
 						</div>
 					)}
 				</div>
-				{error && <p className="mt-2 text-sm text-[#EF4444]">{error}</p>}
+				{error && <p className="mt-2 text-sm text-[#dc2626]">{error}</p>}
 				{hint && !error && (
-					<p className="mt-2 text-sm text-[#6a6a6a]">{hint}</p>
+					<p className="mt-2 text-sm text-[#7a8aa3]">{hint}</p>
 				)}
 			</div>
 		);
@@ -122,7 +123,7 @@ interface SelectProps
 	label?: string;
 	error?: string;
 	options: { value: string; label: string }[];
-	accent?: "blue" | "yellow";
+	accent?: "blue" | "yellow" | "primary" | "secondary";
 	onChange?: (value: string) => void;
 }
 
@@ -130,7 +131,7 @@ export function Select({
 	label,
 	error,
 	options,
-	accent = "blue",
+	accent = "primary",
 	onChange,
 	className,
 	id,
@@ -138,17 +139,17 @@ export function Select({
 }: SelectProps) {
 	const inputId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
 
-	const focusColor =
-		accent === "blue"
-			? "focus:border-[#3B82F6] focus:ring-[#3B82F6]/20"
-			: "focus:border-[#FBBF24] focus:ring-[#FBBF24]/20";
+	const isPrimary = accent === "blue" || accent === "primary";
+	const focusColor = isPrimary
+		? "focus:border-[#482977] focus:ring-[#482977]/20"
+		: "focus:border-[#c22f99] focus:ring-[#c22f99]/20";
 
 	return (
 		<div className="w-full">
 			{label && (
 				<label
 					htmlFor={inputId}
-					className="block text-sm font-medium text-[#e0e0e0] mb-2"
+					className="block text-sm font-medium text-[#1a1a2e] mb-2"
 				>
 					{label}
 				</label>
@@ -158,14 +159,14 @@ export function Select({
 					id={inputId}
 					className={clsx(
 						"w-full px-4 py-3 pr-10",
-						"bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl",
-						"text-white",
+						"bg-white border border-[#482977]/15 rounded-xl",
+						"text-[#1a1a2e]",
 						"transition-all duration-200",
 						"focus:outline-none focus:ring-4",
 						focusColor,
-						error && "border-[#EF4444]",
+						error && "border-[#dc2626]",
 						"appearance-none cursor-pointer",
-						"disabled:opacity-50 disabled:cursor-not-allowed",
+						"disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[#f8f9fc]",
 						className,
 					)}
 					onChange={(e) => onChange?.(e.target.value)}
@@ -177,7 +178,7 @@ export function Select({
 						</option>
 					))}
 				</select>
-				<div className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6a6a6a] pointer-events-none">
+				<div className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a8aa3] pointer-events-none">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="20"
@@ -193,7 +194,7 @@ export function Select({
 					</svg>
 				</div>
 			</div>
-			{error && <p className="mt-2 text-sm text-[#EF4444]">{error}</p>}
+			{error && <p className="mt-2 text-sm text-[#dc2626]">{error}</p>}
 		</div>
 	);
 }
@@ -203,28 +204,28 @@ interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
 	label?: string;
 	error?: string;
 	hint?: string;
-	accent?: "blue" | "yellow";
+	accent?: "blue" | "yellow" | "primary" | "secondary";
 	rows?: number;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 	(
-		{ label, error, hint, accent = "blue", rows = 4, className, id, ...props },
+		{ label, error, hint, accent = "primary", rows = 4, className, id, ...props },
 		ref,
 	) => {
 		const inputId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
 
-		const focusColor =
-			accent === "blue"
-				? "focus:border-[#3B82F6] focus:ring-[#3B82F6]/20"
-				: "focus:border-[#FBBF24] focus:ring-[#FBBF24]/20";
+		const isPrimary = accent === "blue" || accent === "primary";
+		const focusColor = isPrimary
+			? "focus:border-[#482977] focus:ring-[#482977]/20"
+			: "focus:border-[#c22f99] focus:ring-[#c22f99]/20";
 
 		return (
 			<div className="w-full">
 				{label && (
 					<label
 						htmlFor={inputId}
-						className="block text-sm font-medium text-[#e0e0e0] mb-2"
+						className="block text-sm font-medium text-[#1a1a2e] mb-2"
 					>
 						{label}
 					</label>
@@ -235,22 +236,22 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 					rows={rows}
 					className={clsx(
 						"w-full px-4 py-3",
-						"bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl",
-						"text-white placeholder-[#4a4a4a]",
+						"bg-white border border-[#482977]/15 rounded-xl",
+						"text-[#1a1a2e] placeholder-[#a0aec4]",
 						"transition-all duration-200",
 						"focus:outline-none focus:ring-4",
 						focusColor,
 						error &&
-							"border-[#EF4444] focus:border-[#EF4444] focus:ring-[#EF4444]/20",
-						"disabled:opacity-50 disabled:cursor-not-allowed",
+							"border-[#dc2626] focus:border-[#dc2626] focus:ring-[#dc2626]/20",
+						"disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[#f8f9fc]",
 						"resize-none",
 						className,
 					)}
 					{...props}
 				/>
-				{error && <p className="mt-2 text-sm text-[#EF4444]">{error}</p>}
+				{error && <p className="mt-2 text-sm text-[#dc2626]">{error}</p>}
 				{hint && !error && (
-					<p className="mt-2 text-sm text-[#6a6a6a]">{hint}</p>
+					<p className="mt-2 text-sm text-[#7a8aa3]">{hint}</p>
 				)}
 			</div>
 		);

@@ -9,7 +9,7 @@ type ButtonVariant =
 	| "danger"
 	| "success";
 type ButtonSize = "sm" | "md" | "lg";
-type ButtonAccent = "blue" | "yellow";
+type ButtonAccent = "blue" | "yellow" | "primary" | "secondary";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
@@ -26,7 +26,7 @@ export function Button({
 	children,
 	variant = "primary",
 	size = "md",
-	accent = "blue",
+	accent = "primary",
 	isLoading = false,
 	leftIcon,
 	rightIcon,
@@ -39,7 +39,7 @@ export function Button({
 		"inline-flex items-center justify-center gap-2",
 		"font-semibold rounded-xl",
 		"transition-all duration-200",
-		"focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]",
+		"focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
 		"disabled:opacity-50 disabled:cursor-not-allowed",
 		fullWidth && "w-full",
 	);
@@ -50,68 +50,69 @@ export function Button({
 		lg: "px-7 py-3.5 text-lg",
 	};
 
+	// Map old accent names to new
+	const isPrimary = accent === "blue" || accent === "primary";
+
 	const variantStyles = {
-		primary:
-			accent === "blue"
-				? clsx(
-						"bg-gradient-to-r from-[#3B82F6] to-[#2563EB]",
-						"text-white",
-						"hover:from-[#60A5FA] hover:to-[#3B82F6]",
-						"active:from-[#2563EB] active:to-[#1D4ED8]",
-						"focus-visible:ring-[#3B82F6]",
-						"shadow-lg shadow-blue-500/25",
-					)
-				: clsx(
-						"bg-gradient-to-r from-[#FBBF24] to-[#F59E0B]",
-						"text-[#0a0a0a]",
-						"hover:from-[#FCD34D] hover:to-[#FBBF24]",
-						"active:from-[#F59E0B] active:to-[#D97706]",
-						"focus-visible:ring-[#FBBF24]",
-						"shadow-lg shadow-yellow-500/25",
-					),
+		primary: isPrimary
+			? clsx(
+					"bg-gradient-to-r from-[#482977] to-[#6b42a1]",
+					"text-white",
+					"hover:from-[#5c3699] hover:to-[#7d4fb8]",
+					"active:from-[#351d5a] active:to-[#482977]",
+					"focus-visible:ring-[#482977]",
+					"shadow-lg shadow-[#482977]/25",
+				)
+			: clsx(
+					"bg-gradient-to-r from-[#c22f99] to-[#9a2579]",
+					"text-white",
+					"hover:from-[#d94db3] hover:to-[#c22f99]",
+					"active:from-[#9a2579] active:to-[#7c1d61]",
+					"focus-visible:ring-[#c22f99]",
+					"shadow-lg shadow-[#c22f99]/25",
+				),
 		secondary: clsx(
-			"bg-[#2a2a2a]",
-			"text-white",
-			"hover:bg-[#3a3a3a]",
-			"active:bg-[#242424]",
-			"focus-visible:ring-[#4a4a4a]",
-			"border border-[#3a3a3a]",
+			"bg-[#f1f3f9]",
+			"text-[#482977]",
+			"hover:bg-[#e8ecf4]",
+			"active:bg-[#dde3ef]",
+			"focus-visible:ring-[#482977]",
+			"border border-[#482977]/20",
 		),
 		ghost: clsx(
 			"bg-transparent",
-			accent === "blue"
-				? "text-[#60A5FA] hover:bg-[#3B82F6]/10"
-				: "text-[#FBBF24] hover:bg-[#FBBF24]/10",
+			isPrimary
+				? "text-[#482977] hover:bg-[#482977]/10"
+				: "text-[#c22f99] hover:bg-[#c22f99]/10",
 			"active:bg-transparent",
 		),
-		outline:
-			accent === "blue"
-				? clsx(
-						"bg-transparent",
-						"border-2 border-[#3B82F6]",
-						"text-[#60A5FA]",
-						"hover:bg-[#3B82F6]/10",
-						"focus-visible:ring-[#3B82F6]",
-					)
-				: clsx(
-						"bg-transparent",
-						"border-2 border-[#FBBF24]",
-						"text-[#FCD34D]",
-						"hover:bg-[#FBBF24]/10",
-						"focus-visible:ring-[#FBBF24]",
-					),
+		outline: isPrimary
+			? clsx(
+					"bg-transparent",
+					"border-2 border-[#482977]",
+					"text-[#482977]",
+					"hover:bg-[#482977]/10",
+					"focus-visible:ring-[#482977]",
+				)
+			: clsx(
+					"bg-transparent",
+					"border-2 border-[#c22f99]",
+					"text-[#c22f99]",
+					"hover:bg-[#c22f99]/10",
+					"focus-visible:ring-[#c22f99]",
+				),
 		danger: clsx(
-			"bg-gradient-to-r from-[#EF4444] to-[#DC2626]",
+			"bg-gradient-to-r from-[#dc2626] to-[#b91c1c]",
 			"text-white",
-			"hover:from-[#F87171] hover:to-[#EF4444]",
-			"focus-visible:ring-[#EF4444]",
+			"hover:from-[#ef4444] hover:to-[#dc2626]",
+			"focus-visible:ring-[#dc2626]",
 			"shadow-lg shadow-red-500/25",
 		),
 		success: clsx(
-			"bg-gradient-to-r from-[#22C55E] to-[#16A34A]",
+			"bg-gradient-to-r from-[#16a34a] to-[#15803d]",
 			"text-white",
-			"hover:from-[#4ADE80] hover:to-[#22C55E]",
-			"focus-visible:ring-[#22C55E]",
+			"hover:from-[#22c55e] hover:to-[#16a34a]",
+			"focus-visible:ring-[#16a34a]",
 			"shadow-lg shadow-green-500/25",
 		),
 	};

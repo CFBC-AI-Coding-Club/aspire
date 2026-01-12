@@ -19,8 +19,6 @@ import { useUserProfileQuery } from "../../hooks/queries/useUsersQuery";
 import {
   formatCurrency,
   formatPercent,
-  getSparklineData,
-  type mockStocks,
 } from "../../data/mockStocks";
 import { useMemo } from "react";
 
@@ -79,12 +77,12 @@ function StockCard({ stock }: { stock: Stock }) {
       <Card hover className="h-full">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-[#2a2a2a] flex items-center justify-center text-xl font-bold">
+            <div className="w-12 h-12 rounded-xl bg-[#482977]/10 flex items-center justify-center text-xl font-bold text-[#482977]">
               {stock.ticker.slice(0, 2)}
             </div>
             <div>
-              <p className="font-bold text-white">{stock.ticker}</p>
-              <p className="text-sm text-[#6a6a6a] truncate max-w-[120px]">
+              <p className="font-bold text-[#1a1a2e]">{stock.ticker}</p>
+              <p className="text-sm text-[#7a8aa3] truncate max-w-[120px]">
                 {stock.name}
               </p>
             </div>
@@ -93,8 +91,8 @@ function StockCard({ stock }: { stock: Stock }) {
             className={clsx(
               "flex items-center gap-1 px-2 py-1 rounded-lg text-sm font-medium",
               isPositive
-                ? "bg-[#22C55E]/10 text-[#22C55E]"
-                : "bg-[#EF4444]/10 text-[#EF4444]",
+                ? "bg-[#16a34a]/10 text-[#16a34a]"
+                : "bg-[#dc2626]/10 text-[#dc2626]",
             )}
           >
             {isPositive ? (
@@ -109,19 +107,19 @@ function StockCard({ stock }: { stock: Stock }) {
         <div className="h-10 mb-4">
           <Sparkline
             data={sparklineData}
-            color={isPositive ? "#22C55E" : "#EF4444"}
+            color={isPositive ? "#16a34a" : "#dc2626"}
           />
         </div>
 
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-2xl font-bold text-white font-tabular">
+            <p className="text-2xl font-bold text-[#1a1a2e] font-tabular">
               {formatCurrency(stock.price)}
             </p>
             <p
               className={clsx(
                 "text-sm font-medium",
-                isPositive ? "text-[#22C55E]" : "text-[#EF4444]",
+                isPositive ? "text-[#16a34a]" : "text-[#dc2626]",
               )}
             >
               {isPositive ? "+" : ""}
@@ -167,8 +165,8 @@ function QuickActionCard({
         >
           <Icon className="w-6 h-6 text-white" />
         </div>
-        <h3 className="font-semibold text-white mb-1">{title}</h3>
-        <p className="text-sm text-[#6a6a6a]">{description}</p>
+        <h3 className="font-semibold text-[#1a1a2e] mb-1">{title}</h3>
+        <p className="text-sm text-[#7a8aa3]">{description}</p>
       </Card>
     </Link>
   );
@@ -219,23 +217,41 @@ function DashboardPage() {
 
   const totalValue = balance + portfolioValue;
 
-  // Mock today's change for now (can be calculated from portfolio history later)
-  const todayChange = 234.5;
+  // Calculate today's change from transactions if available
+  const todayChange = useMemo(() => {
+    if (!userProfile?.transactions || userProfile.transactions.length === 0) return 0;
+    const today = new Date().toDateString();
+    return userProfile.transactions
+      .filter((tx: { timestamp: string }) => new Date(tx.timestamp).toDateString() === today)
+      .reduce((sum: number, tx: { type: string; total: number }) => {
+        return sum + (tx.type === 'BUY' ? -tx.total : tx.total);
+      }, 0);
+  }, [userProfile?.transactions]);
+
   const todayChangePercent =
     totalValue > 0 ? (todayChange / totalValue) * 100 : 0;
-  const totalReturn = portfolioValue > 0 ? portfolioValue - 10000 : 0;
+  
+  // Calculate total return based on initial balance
+  const initialBalance = 10000; // Starting balance
+  const totalReturn = totalValue - initialBalance;
   const totalReturnPercent =
-    portfolioValue > 0 ? ((portfolioValue - 10000) / 10000) * 100 : 0;
+    initialBalance > 0 ? ((totalValue - initialBalance) / initialBalance) * 100 : 0;
+
+  // Get recent transactions from user profile
+  const recentTransactions = useMemo(() => {
+    if (!userProfile?.transactions) return [];
+    return userProfile.transactions.slice(0, 4);
+  }, [userProfile?.transactions]);
 
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-1">
+          <h1 className="text-3xl font-bold text-[#1a1a2e] mb-1">
             Welcome back, {user?.name?.split(" ")[0]} 👋
           </h1>
-          <p className="text-[#6a6a6a]">
+          <p className="text-[#7a8aa3]">
             Here's what's happening with your investments today.
           </p>
         </div>
@@ -255,7 +271,7 @@ function DashboardPage() {
           value={formatCurrency(totalValue)}
           change={todayChangePercent}
           icon="💰"
-          accent="blue"
+          accent="primary"
         />
         <StatCard
           label="Today's Change"
@@ -281,10 +297,10 @@ function DashboardPage() {
       <section>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-bold text-white">
+            <h2 className="text-xl font-bold text-[#1a1a2e]">
               Top Performing Stocks
             </h2>
-            <p className="text-sm text-[#6a6a6a]">
+            <p className="text-sm text-[#7a8aa3]">
               Highest gainers in the last 24 hours
             </p>
           </div>
@@ -301,7 +317,7 @@ function DashboardPage() {
         {isLoadingStocks ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i} className="h-48 animate-pulse bg-[#121212]" />
+              <Card key={i} className="h-48 animate-pulse bg-[#f1f3f9]" />
             ))}
           </div>
         ) : (
@@ -315,35 +331,35 @@ function DashboardPage() {
 
       {/* Quick Actions */}
       <section>
-        <h2 className="text-xl font-bold text-white mb-6">Quick Actions</h2>
+        <h2 className="text-xl font-bold text-[#1a1a2e] mb-6">Quick Actions</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <QuickActionCard
             icon={Briefcase}
             title="My Portfolio"
             description="View your holdings"
             to="/portfolio"
-            gradient="from-[#3B82F6] to-[#2563EB]"
+            gradient="from-[#482977] to-[#6b42a1]"
           />
           <QuickActionCard
             icon={Trophy}
             title="Leaderboard"
             description="See top investors"
             to="/leaderboard"
-            gradient="from-[#FBBF24] to-[#F59E0B]"
+            gradient="from-[#c22f99] to-[#9a2579]"
           />
           <QuickActionCard
             icon={BookOpen}
             title="Learn"
             description="Investment guides"
             to="/guides"
-            gradient="from-[#22C55E] to-[#16A34A]"
+            gradient="from-[#16a34a] to-[#15803d]"
           />
           <QuickActionCard
             icon={Zap}
             title="Games"
             description="Practice trading"
             to="/games"
-            gradient="from-[#8B5CF6] to-[#7C3AED]"
+            gradient="from-[#6b42a1] to-[#482977]"
           />
         </div>
       </section>
@@ -355,91 +371,51 @@ function DashboardPage() {
           <Card>
             <CardTitle className="mb-6">Recent Activity</CardTitle>
             <div className="space-y-4">
-              {[
-                {
-                  type: "BUY",
-                  symbol: "NVDA",
-                  shares: 2,
-                  price: 495.22,
-                  time: "2 hours ago",
-                },
-                {
-                  type: "SELL",
-                  symbol: "AAPL",
-                  shares: 5,
-                  price: 178.72,
-                  time: "5 hours ago",
-                },
-                {
-                  type: "BUY",
-                  symbol: "MSFT",
-                  shares: 3,
-                  price: 378.91,
-                  time: "Yesterday",
-                },
-                {
-                  type: "achievement",
-                  title: "First Trade!",
-                  desc: "Completed your first stock trade",
-                  time: "2 days ago",
-                },
-              ].map((activity, i) => (
-                <div
-                  key={i}
-                  className={clsx(
-                    "flex items-center justify-between p-4 rounded-xl",
-                    "bg-[#121212] border border-[#1a1a1a]",
-                  )}
-                >
-                  {activity.type === "achievement" ? (
-                    <>
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#FBBF24]/20 flex items-center justify-center">
-                          <Target className="w-5 h-5 text-[#FBBF24]" />
-                        </div>
-                        <div>
-                          <p className="font-medium text-white">
-                            {activity.title}
-                          </p>
-                          <p className="text-sm text-[#6a6a6a]">
-                            {activity.desc}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-sm text-[#4a4a4a]">{activity.time}</p>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-4">
-                        <div
-                          className={clsx(
-                            "w-10 h-10 rounded-full flex items-center justify-center",
-                            activity.type === "BUY"
-                              ? "bg-[#22C55E]/20 text-[#22C55E]"
-                              : "bg-[#EF4444]/20 text-[#EF4444]",
-                          )}
-                        >
-                          {activity.type === "BUY" ? (
-                            <TrendingUp className="w-5 h-5" />
-                          ) : (
-                            <TrendingDown className="w-5 h-5" />
-                          )}
-                        </div>
-                        <div>
-                          <p className="font-medium text-white">
-                            {activity.type} {activity.symbol}
-                          </p>
-                          <p className="text-sm text-[#6a6a6a]">
-                            {activity.shares} shares @{" "}
-                            {formatCurrency(activity.price!)}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-sm text-[#4a4a4a]">{activity.time}</p>
-                    </>
-                  )}
+              {recentTransactions.length === 0 ? (
+                <div className="text-center py-8 text-[#7a8aa3]">
+                  <p>No recent activity yet.</p>
+                  <p className="text-sm mt-1">Start trading to see your activity here!</p>
                 </div>
-              ))}
+              ) : (
+                recentTransactions.map((activity: { id: string; type: string; ticker: string; quantity: number; price: number; timestamp: string }, i: number) => (
+                  <div
+                    key={activity.id || i}
+                    className={clsx(
+                      "flex items-center justify-between p-4 rounded-xl",
+                      "bg-[#f8f9fc] border border-[#482977]/5",
+                    )}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={clsx(
+                          "w-10 h-10 rounded-full flex items-center justify-center",
+                          activity.type === "BUY"
+                            ? "bg-[#16a34a]/10 text-[#16a34a]"
+                            : "bg-[#dc2626]/10 text-[#dc2626]",
+                        )}
+                      >
+                        {activity.type === "BUY" ? (
+                          <TrendingUp className="w-5 h-5" />
+                        ) : (
+                          <TrendingDown className="w-5 h-5" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-medium text-[#1a1a2e]">
+                          {activity.type} {activity.ticker}
+                        </p>
+                        <p className="text-sm text-[#7a8aa3]">
+                          {activity.quantity} shares @{" "}
+                          {formatCurrency(activity.price)}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-[#a0aec4]">
+                      {new Date(activity.timestamp).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))
+              )}
             </div>
           </Card>
         </div>
@@ -447,16 +423,16 @@ function DashboardPage() {
         {/* Tips & Achievements */}
         <div className="space-y-6">
           {/* Daily Tip */}
-          <Card className="bg-gradient-to-br from-[#3B82F6]/10 to-[#2563EB]/5 border-[#3B82F6]/20">
+          <Card className="bg-gradient-to-br from-[#482977]/5 to-[#6b42a1]/5 border-[#482977]/20">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-[#482977]/10 flex items-center justify-center flex-shrink-0">
                 💡
               </div>
               <div>
-                <h3 className="font-semibold text-white mb-2">
+                <h3 className="font-semibold text-[#1a1a2e] mb-2">
                   Tip of the Day
                 </h3>
-                <p className="text-sm text-[#9a9a9a] leading-relaxed">
+                <p className="text-sm text-[#566279] leading-relaxed">
                   "Diversification is key! Don't put all your eggs in one
                   basket. Spread your investments across different sectors to
                   reduce risk."
@@ -469,23 +445,23 @@ function DashboardPage() {
           {!isParent && (
             <Card>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-white">Your Progress</h3>
-                <span className="text-sm text-[#60A5FA] font-medium">
-                  Level {user?.level || 5}
+                <h3 className="font-semibold text-[#1a1a2e]">Your Progress</h3>
+                <span className="text-sm text-[#482977] font-medium">
+                  Level {user?.level || 1}
                 </span>
               </div>
-              <div className="h-3 bg-[#2a2a2a] rounded-full overflow-hidden mb-3">
+              <div className="h-3 bg-[#f1f3f9] rounded-full overflow-hidden mb-3">
                 <div
-                  className="h-full bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] rounded-full transition-all duration-500"
-                  style={{ width: "65%" }}
+                  className="h-full bg-gradient-to-r from-[#482977] to-[#6b42a1] rounded-full transition-all duration-500"
+                  style={{ width: `${Math.min((userProfile?.xp || 0) / 1000 * 100, 100)}%` }}
                 />
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-[#6a6a6a]">
-                  {userProfile?.xp || 2450} XP
+                <span className="text-[#7a8aa3]">
+                  {userProfile?.xp || 0} XP
                 </span>
-                <span className="text-[#6a6a6a]">
-                  3750 XP to Level {(user?.level || 5) + 1}
+                <span className="text-[#7a8aa3]">
+                  1000 XP to Level {(user?.level || 1) + 1}
                 </span>
               </div>
             </Card>
@@ -493,23 +469,25 @@ function DashboardPage() {
 
           {/* Quick Stats */}
           <Card>
-            <h3 className="font-semibold text-white mb-4">This Month</h3>
+            <h3 className="font-semibold text-[#1a1a2e] mb-4">This Month</h3>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-[#6a6a6a]">Trades Made</span>
-                <span className="font-semibold text-white">12</span>
+                <span className="text-[#7a8aa3]">Trades Made</span>
+                <span className="font-semibold text-[#1a1a2e]">
+                  {userProfile?.transactions?.length || 0}
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#6a6a6a]">Win Rate</span>
-                <span className="font-semibold text-[#22C55E]">67%</span>
+                <span className="text-[#7a8aa3]">Holdings</span>
+                <span className="font-semibold text-[#1a1a2e]">
+                  {userProfile?.portfolio?.length || 0}
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#6a6a6a]">Best Trade</span>
-                <span className="font-semibold text-[#22C55E]">+$127.50</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[#6a6a6a]">Guides Completed</span>
-                <span className="font-semibold text-white">5/8</span>
+                <span className="text-[#7a8aa3]">Total Value</span>
+                <span className="font-semibold text-[#16a34a]">
+                  {formatCurrency(totalValue)}
+                </span>
               </div>
             </div>
           </Card>

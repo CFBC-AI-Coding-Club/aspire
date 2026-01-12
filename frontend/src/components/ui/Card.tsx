@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import type { HTMLAttributes, ReactNode } from "react";
 
 type CardVariant = "default" | "elevated" | "outlined" | "glass";
-type CardAccent = "none" | "blue" | "yellow" | "success" | "error";
+type CardAccent = "none" | "blue" | "yellow" | "success" | "error" | "primary" | "secondary";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode;
@@ -26,18 +26,21 @@ export function Card({
 	const baseStyles = clsx("rounded-2xl", "transition-all duration-200");
 
 	const variantStyles = {
-		default: "bg-[#1a1a1a] border border-[#2a2a2a]",
-		elevated: "bg-[#1a1a1a] shadow-xl shadow-black/30",
-		outlined: "bg-transparent border-2 border-[#2a2a2a]",
-		glass: "bg-[#1a1a1a]/60 backdrop-blur-xl border border-white/10",
+		default: "bg-white border border-[#482977]/10 shadow-sm",
+		elevated: "bg-white shadow-lg shadow-[#482977]/5",
+		outlined: "bg-transparent border-2 border-[#482977]/15",
+		glass: "bg-white/80 backdrop-blur-xl border border-[#482977]/10",
 	};
 
+	// Map old accent names to new colors
 	const accentStyles = {
 		none: "",
-		blue: "border-l-4 border-l-[#3B82F6]",
-		yellow: "border-l-4 border-l-[#FBBF24]",
-		success: "border-l-4 border-l-[#22C55E]",
-		error: "border-l-4 border-l-[#EF4444]",
+		blue: "border-l-4 border-l-[#482977]",
+		primary: "border-l-4 border-l-[#482977]",
+		yellow: "border-l-4 border-l-[#c22f99]",
+		secondary: "border-l-4 border-l-[#c22f99]",
+		success: "border-l-4 border-l-[#16a34a]",
+		error: "border-l-4 border-l-[#dc2626]",
 	};
 
 	const paddingStyles = {
@@ -48,11 +51,11 @@ export function Card({
 	};
 
 	const hoverStyles = hover
-		? "hover:border-[#3a3a3a] hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
+		? "hover:border-[#482977]/25 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
 		: "";
 
 	const gradientStyles = gradient
-		? "bg-gradient-to-br from-[#1a1a1a] to-[#121212]"
+		? "bg-gradient-to-br from-white to-[#f8f9fc]"
 		: "";
 
 	return (
@@ -101,7 +104,7 @@ export function CardTitle({
 	return (
 		<Component
 			className={clsx(
-				"font-semibold text-white",
+				"font-semibold text-[#1a1a2e]",
 				Component === "h1" && "text-2xl",
 				Component === "h2" && "text-xl",
 				Component === "h3" && "text-lg",
@@ -126,7 +129,7 @@ export function CardDescription({
 	...props
 }: CardDescriptionProps) {
 	return (
-		<p className={clsx("text-[#9a9a9a] text-sm mt-1", className)} {...props}>
+		<p className={clsx("text-[#566279] text-sm mt-1", className)} {...props}>
 			{children}
 		</p>
 	);
@@ -157,7 +160,7 @@ interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
 export function CardFooter({ children, className, ...props }: CardFooterProps) {
 	return (
 		<div
-			className={clsx("mt-4 pt-4 border-t border-[#2a2a2a]", className)}
+			className={clsx("mt-4 pt-4 border-t border-[#482977]/10", className)}
 			{...props}
 		>
 			{children}
@@ -187,13 +190,13 @@ export function StatCard({
 		<Card accent={accent} hover>
 			<div className="flex items-start justify-between">
 				<div>
-					<p className="text-[#6a6a6a] text-sm font-medium">{label}</p>
-					<p className="text-2xl font-bold text-white mt-1">{value}</p>
+					<p className="text-[#7a8aa3] text-sm font-medium">{label}</p>
+					<p className="text-2xl font-bold text-[#1a1a2e] mt-1">{value}</p>
 					{change !== undefined && (
 						<div
 							className={clsx(
 								"flex items-center gap-1 mt-2 text-sm font-medium",
-								isPositive ? "text-[#22C55E]" : "text-[#EF4444]",
+								isPositive ? "text-[#16a34a]" : "text-[#dc2626]",
 							)}
 						>
 							<span>{isPositive ? "↑" : "↓"}</span>

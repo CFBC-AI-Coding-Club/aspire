@@ -85,7 +85,7 @@ app.use("*", logger());
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:7823", "http://localhost:5491"],
+    origin: ["http://localhost:7823", "http://localhost:5491", "https://aspire.fraimer.dev", "https://aspire-api.fraimer.dev"],
     credentials: true,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
