@@ -3,7 +3,18 @@
 
 @import "tailwindcss";
 
+/* Tailwind v4: Disable automatic dark mode */
+@variant dark (&:is(.dark *));
+
+/* Force light mode - prevent browser dark mode from affecting styles */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light only;
+  }
+}
+
 :root {
+  color-scheme: light only;
   /* Light theme base colors */
   --color-base-900: #ffffff;
   --color-base-800: #f8f9fc;
