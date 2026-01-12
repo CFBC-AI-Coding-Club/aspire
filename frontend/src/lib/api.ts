@@ -30,6 +30,7 @@ export async function apiFetch<T = any>(
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
+    credentials: "include", // Include cookies for session auth
   });
 
   if (!response.ok) {

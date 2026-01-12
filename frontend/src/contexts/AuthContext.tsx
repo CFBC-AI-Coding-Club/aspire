@@ -231,10 +231,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// Default auth state for SSR or when context is not available
+const defaultAuthState: AuthContextType = {
+  user: null,
+  isAuthenticated: false,
+  isLoading: true,
+  login: async () => ({ success: false, error: "Not initialized" }),
+  signup: async () => ({ success: false, error: "Not initialized" }),
+  logout: async () => {},
+  switchToChild: () => {},
+  switchToParent: () => {},
+  updateUser: () => {},
+};
+
 export function useAuth() {
   const context = useContext(AuthContext);
+  // Return default state during SSR or when context is not available
+  // This prevents SSR errors while still maintaining proper behavior on client
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    return defaultAuthState;
   }
   return context;
 }
