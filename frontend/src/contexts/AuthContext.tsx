@@ -69,7 +69,7 @@ const mapSessionToUser = (session: any): User | null => {
     id: session.user.id,
     email: session.user.email,
     name: session.user.name,
-    accountType: "parent", // Default, will be updated by useUserProfileQuery
+    accountType: "PARENT", // Default, will be updated by useUserProfileQuery
     createdAt:
       typeof session.user.createdAt === "string"
         ? session.user.createdAt
