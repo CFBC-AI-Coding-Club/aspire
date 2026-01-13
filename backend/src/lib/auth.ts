@@ -32,6 +32,6 @@ export const auth = betterAuth({
     "http://localhost:7823",
     "http://localhost:5491",
     "https://aspire.fraimer.dev",
-    "https://api.aspire.fraimer.dev",
+    "https://aspire-api.fraimer.dev",
   ],
 });
