@@ -79,8 +79,6 @@ function RootComponent() {
     <RootDocument>
       <AuthProvider>
         <Outlet />
-        <ReactQueryDevtools position="bottom" />
-        <TanStackRouterDevtools position="bottom-left" />
       </AuthProvider>
     </RootDocument>
   );
