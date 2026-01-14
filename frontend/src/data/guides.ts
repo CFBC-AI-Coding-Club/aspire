@@ -67,68 +67,129 @@ export const guides: Guide[] = [
 			"Learn the basics of investing and why it matters for your future.",
 		category: "getting-started",
 		difficulty: "beginner",
-		duration: "10 min",
+		duration: "15 min",
 		icon: "💰",
 		sections: [
 			{
 				id: "s1",
-				title: "Introduction to Investing",
-				content: `Investing is putting your money to work for you. Instead of just saving money in a piggy bank, you can invest it in things like stocks, which can grow over time.
+				title: "What is Investing?",
+				content: `Investing is the process of essentially buying a 'slice' of a company that is publicly traded. When the company gains value (total money and assets), the net value increases which dictates how much each slice is worth.
 
-Think of it like planting a tree. You plant a seed (your money), and over time it grows into something much bigger. The earlier you start, the more time your money has to grow!`,
+For example, if company A is worth $25,000 and liquidates 25% of that into 20,000 shares and starts selling, they have essentially released ownership of 25% of their company to the public and further split the 25% into 20,000 pieces for people to buy and sell (25% of $25,000 is $6,250, but by splitting it into 20,000, each share is worth $0.3215). The less pieces there are, the more weight each piece has in securing a percentage of the 25%, and vice versa.`,
 				tips: [
-					"Start early - even small amounts add up over time",
-					"Investing is different from gambling - it's about long-term growth",
-					"Your money can work for you while you sleep!",
+					"Each share represents a small ownership stake in the company",
+					"The more shares a company issues, the smaller the percentage each share represents",
+					"Share value is determined by the company's total value divided by the number of shares",
 				],
 			},
 			{
 				id: "s2",
-				title: "Why Should You Invest?",
-				content: `There are many reasons to start investing:
+				title: "Why Invest in a Company?",
+				content: `Now you may wonder, why would I want 0.01 percent of a company? Well, as you invest in a company, they receive more funds for more operations and more value. Over time the value increases and you are essentially betting on their success.
 
-**1. Beat Inflation**: Prices go up over time. A candy bar that cost $1 might cost $2 in 10 years. Investing helps your money grow faster than prices rise.
+As the net worth increases (ex. $25,000 to $50,000), the more the pieces are worth. So your 100 shares which you bought at $0.50 can then be sold at $2.00, turning $50 of your money into $200 if you sell. Or if you really believe in that stock you can hold on for even more earnings.
 
-**2. Build Wealth**: Investing can help you save for big goals like college, a car, or starting your own business.
-
-**3. Compound Growth**: This is like magic! When your investments make money, that money can also make more money. It's growth on top of growth!`,
+However, there is always a risk of negative setbacks which will cause losses for them and for you by extension, or negative news which makes other investors nervous and start selling their shares.`,
 				example: {
-					title: "The Power of Compound Growth",
+					title: "Share Value Growth Example",
 					description:
-						"If you invest $100 and earn 10% per year, after year 1 you have $110. In year 2, you earn 10% on $110, giving you $121. This keeps growing faster and faster!",
+						"You buy 100 shares at $0.50 each ($50 total). The company grows and its value doubles. Your shares are now worth $2.00 each ($200 total). You've made $150 profit!",
 				},
+				tips: [
+					"Your investment grows when the company becomes more valuable",
+					"You can sell at any time, but timing matters",
+					"Higher potential returns come with higher risks",
+				],
+			},
+			{
+				id: "s3",
+				title: "How Buying and Selling Affects Stock Value",
+				content: `Because selling your shares is essentially the company buying the share back from you, the company loses value whenever you sell and gains value whenever you buy.
+
+This leads to the main focus of investing: **market trends**. One can comfortably predict whether the stock will rise and fall with some research on the company itself, the news surrounding it, and some basic psychology.`,
+				tips: [
+					"When many people buy, stock prices rise",
+					"When many people sell, stock prices fall",
+					"Supply and demand directly affect stock prices",
+				],
+			},
+			{
+				id: "s4",
+				title: "Understanding Market Trends",
+				content: `If you saw a stock rising, you would most likely buy as soon as possible and sell when you think it reaches a peak. But many others are trying to do the same thing.
+
+As we learned before, when everyone is buying, the company's value increases which causes more people to buy, creating a **positive feedback loop**. But as everyone is also on edge trying to predict the peak, this is a precarious time.
+
+Anything that could discourage the investors and make them sell will cause a cascade of sellers, causing a progressive drop in value. To invest effectively, you must try to predict these rising and falling trends and ride the wave to success.`,
+				example: {
+					title: "The Feedback Loop",
+					description:
+						"A company announces record profits. Investors get excited and buy shares. The price rises. More investors notice and buy in. The price rises more. But one piece of bad news can reverse this trend instantly.",
+				},
+				tips: [
+					"Rising stocks attract more buyers, creating momentum",
+					"Falling stocks trigger panic selling, accelerating the decline",
+					"Study company fundamentals and market sentiment to predict trends",
+					"Don't follow the crowd blindly - do your own research",
+				],
 			},
 		],
 		quiz: {
 			questions: [
 				{
 					id: "q1",
-					question: "What is investing?",
+					question: "What happens to share value when a company's net worth increases?",
 					options: [
-						"Spending money on things you want",
-						"Putting money to work to grow over time",
-						"Hiding money under your mattress",
-						"Giving money to your friends",
+						"Share value decreases",
+						"Share value stays the same",
+						"Share value increases",
+						"Shares are canceled",
 					],
-					correctAnswer: 1,
+					correctAnswer: 2,
 					explanation:
-						"Investing is putting your money to work so it can grow over time, like planting a seed that grows into a tree.",
+						"When a company's net worth increases, the value of each share increases proportionally, making your investment more valuable.",
 				},
 				{
 					id: "q2",
-					question: "What is compound growth?",
+					question: "What happens when many investors start selling their shares?",
 					options: [
-						"When you lose money on investments",
-						"When your earnings also earn money",
-						"A type of savings account",
-						"A math problem",
+						"Stock price increases",
+						"Stock price decreases due to cascade effect",
+						"Nothing changes",
+						"The company grows stronger",
 					],
 					correctAnswer: 1,
 					explanation:
-						"Compound growth is when your investment earnings also earn returns, creating growth on top of growth!",
+						"When many investors sell, it creates a cascade effect that drives the stock price down, as increased supply without matching demand reduces value.",
+				},
+				{
+					id: "q3",
+					question: "If you bought 100 shares at $0.50 each and sold them at $2.00 each, what's your profit?",
+					options: [
+						"$50",
+						"$100",
+						"$150",
+						"$200",
+					],
+					correctAnswer: 2,
+					explanation:
+						"You invested $50 (100 × $0.50) and sold for $200 (100 × $2.00). Your profit is $200 - $50 = $150.",
+				},
+				{
+					id: "q4",
+					question: "What creates a positive feedback loop in stock trading?",
+					options: [
+						"Everyone selling at once",
+						"Rising prices attracting more buyers",
+						"Companies going bankrupt",
+						"Random price changes",
+					],
+					correctAnswer: 1,
+					explanation:
+						"When stocks rise, more people want to buy, which pushes prices higher, attracting even more buyers - creating a positive feedback loop.",
 				},
 			],
-			passingScore: 50,
+			passingScore: 75,
 		},
 	},
 	{

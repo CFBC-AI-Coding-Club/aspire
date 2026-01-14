@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import { BookOpen, CheckCircle, ChevronRight, Clock } from "lucide-react";
 import { useState } from "react";
@@ -137,6 +137,17 @@ function GuidesPage() {
 	const [selectedCategory, setSelectedCategory] = useState<
 		GuideCategory | "all"
 	>("all");
+	
+	// Check if a child route (guide detail) is being rendered
+	const guideDetailMatch = useMatch({ 
+		from: "/_app/guides/$guideId",
+		shouldThrow: false 
+	});
+
+	// If a guide detail is matched, render the Outlet (child route)
+	if (guideDetailMatch) {
+		return <Outlet />;
+	}
 
 	const categories = getCategories();
 
