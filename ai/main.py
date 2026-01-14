@@ -11,7 +11,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise ValueError("OPENAI_API_KEY not found in environment")
 
-print("API Key detected:", api_key)
+api_url = os.getenv("API_URL")
 
 client = OpenAI(api_key=api_key)
 
@@ -62,7 +62,7 @@ def send_message(user_message: str, market_data: dict):
 
     # Call OpenAI API
     resp = client.responses.create(
-        model="gpt-4.1",
+        model="gpt-5.1",
         messages=history
     )
 
@@ -75,7 +75,7 @@ def send_message(user_message: str, market_data: dict):
 
 if __name__ == "__main__":
     # URL of the internal API providing market data
-    internal_api_url = "https://api/internal/events/create"
+    internal_api_url = api_url + "/stocks"
     
     # Fetch market data
     market_data = fetch_internal_market_data(internal_api_url)

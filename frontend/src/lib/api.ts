@@ -132,3 +132,33 @@ export const leaderboardAPI = {
     return apiFetch("/leaderboard");
   },
 };
+
+// AI Assistant API
+export const aiAPI = {
+  // Chat with the AI assistant
+  chat: (message: string, context?: string): Promise<{
+    message: string;
+    context: {
+      portfolioValue: number;
+      balance: number;
+      holdingsCount: number;
+    };
+  }> => {
+    return apiFetch("/ai/chat", {
+      method: "POST",
+      body: JSON.stringify({ message, context }),
+    });
+  },
+
+  // Get simple coaching advice
+  getCoachAdvice: (): Promise<{ advice: string; mood: string }> => {
+    return apiFetch("/ai/coach");
+  },
+
+  // Clear chat history
+  clearHistory: () => {
+    return apiFetch("/ai/chat", {
+      method: "DELETE",
+    });
+  },
+};

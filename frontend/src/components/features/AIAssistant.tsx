@@ -1,14 +1,16 @@
 import { useLocation } from "@tanstack/react-router";
 import { clsx } from "clsx";
-import { Bot, Send, Sparkles, X } from "lucide-react";
-import { useState } from "react";
+import { Bot, Loader2, RotateCcw, Send, Sparkles, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { aiAPI } from "../../lib/api";
 
 interface Message {
 	id: string;
 	content: string;
 	role: "user" | "assistant";
 	timestamp: Date;
+	isLoading?: boolean;
 }
 
 // Context-aware placeholder text based on current page
@@ -23,15 +25,17 @@ const placeholderByPath: Record<string, string> = {
 	"/profile": "Want to understand your stats?",
 };
 
-// Placeholder responses for the AI assistant
-const assistantResponses = [
-	"Great question! I'd recommend starting with our 'What is Investing?' guide to understand the basics. Would you like me to explain any specific concept?",
-	"Based on your portfolio, you have a good mix of tech stocks. Have you considered diversifying into other sectors like healthcare or consumer goods?",
-	"The market has been showing some interesting trends lately! Remember, it's important to focus on long-term growth rather than daily fluctuations.",
-	"That's a smart approach to investing! Dollar-cost averaging can help reduce the impact of market volatility on your purchases.",
-	"I see you're interested in that stock! Remember to research the company's fundamentals before making investment decisions.",
-	"This feature will be enhanced with AI soon! For now, I can help answer basic questions about investing and the platform.",
-];
+// Map paths to context strings for the AI
+const contextByPath: Record<string, string> = {
+	"/dashboard": "dashboard - viewing portfolio summary and market overview",
+	"/market": "market - browsing available stocks to buy",
+	"/portfolio": "portfolio - viewing their stock holdings",
+	"/leaderboard": "leaderboard - comparing performance with other users",
+	"/games": "games - learning games section",
+	"/guides": "guides - educational content",
+	"/create-stock": "create-stock - creating a new stock",
+	"/profile": "profile - viewing their account details",
+};
 
 export function AIAssistant() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +49,8 @@ export function AIAssistant() {
 		},
 	]);
 	const [input, setInput] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const location = useLocation();
 	const { user } = useAuth();
 
@@ -53,35 +59,94 @@ export function AIAssistant() {
 	const placeholder =
 		placeholderByPath[location.pathname] ||
 		"Ask me anything about investing...";
+	const currentContext = contextByPath[location.pathname] || "general";
 
-	const handleSend = () => {
-		if (!input.trim()) return;
+	// Auto-scroll to bottom when new messages arrive
+	const scrollToBottom = useCallback(() => {
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, []);
 
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages, scrollToBottom]);
+
+	const handleSend = async () => {
+		if (!input.trim() || isLoading) return;
+
+		const userMessageContent = input.trim();
+		
 		// Add user message
 		const userMessage: Message = {
 			id: Date.now().toString(),
-			content: input,
+			content: userMessageContent,
 			role: "user",
 			timestamp: new Date(),
 		};
 
-		setMessages((prev) => [...prev, userMessage]);
-		setInput("");
+		// Add loading message placeholder
+		const loadingMessage: Message = {
+			id: (Date.now() + 1).toString(),
+			content: "",
+			role: "assistant",
+			timestamp: new Date(),
+			isLoading: true,
+		};
 
-		// Simulate AI response (placeholder for future AI integration)
-		setTimeout(() => {
-			const randomResponse =
-				assistantResponses[
-					Math.floor(Math.random() * assistantResponses.length)
-				];
-			const assistantMessage: Message = {
-				id: (Date.now() + 1).toString(),
-				content: randomResponse,
-				role: "assistant",
-				timestamp: new Date(),
-			};
-			setMessages((prev) => [...prev, assistantMessage]);
-		}, 1000);
+		setMessages((prev) => [...prev, userMessage, loadingMessage]);
+		setInput("");
+		setIsLoading(true);
+
+		try {
+			// Call the actual AI API
+			const response = await aiAPI.chat(userMessageContent, currentContext);
+			
+			// Replace loading message with actual response
+			setMessages((prev) => 
+				prev.map((msg) =>
+					msg.isLoading
+						? {
+								...msg,
+								content: response.message,
+								isLoading: false,
+							}
+						: msg
+				)
+			);
+		} catch (error) {
+			console.error("AI Chat Error:", error);
+			
+			// Replace loading message with error
+			setMessages((prev) =>
+				prev.map((msg) =>
+					msg.isLoading
+						? {
+								...msg,
+								content: "Oops! I'm having trouble right now. 😅 Please try again in a moment!",
+								isLoading: false,
+							}
+						: msg
+				)
+			);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	const handleClearHistory = async () => {
+		try {
+			await aiAPI.clearHistory();
+			setMessages([
+				{
+					id: Date.now().toString(),
+					content:
+						"Hi! I'm Sparky, your investing assistant. 🚀 I can help you learn about stocks, understand your portfolio, and answer questions about investing. What would you like to know?",
+					role: "assistant",
+					timestamp: new Date(),
+				},
+			]);
+		} catch (error) {
+			console.error("Failed to clear chat history:", error);
+		}
 	};
 
 	return (
@@ -146,10 +211,23 @@ export function AIAssistant() {
 						>
 							<Sparkles className="w-5 h-5 text-white" />
 						</div>
-						<div>
+						<div className="flex-1">
 							<h3 className="font-semibold text-[var(--color-text-primary)]">Sparky</h3>
 							<p className="text-xs text-[var(--color-text-muted)]">Your investing assistant</p>
 						</div>
+						<button
+							type="button"
+							onClick={handleClearHistory}
+							className={clsx(
+								"p-2 rounded-lg",
+								"text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]",
+								"hover:bg-[var(--color-base-700)]",
+								"transition-colors duration-200"
+							)}
+							title="Start new conversation"
+						>
+							<RotateCcw className="w-4 h-4" />
+						</button>
 					</div>
 
 					{/* Messages */}
@@ -175,10 +253,18 @@ export function AIAssistant() {
 											: "bg-[var(--color-base-700)] text-[var(--color-text-primary)] rounded-bl-md",
 									)}
 								>
-									<p className="text-sm leading-relaxed">{message.content}</p>
+									{message.isLoading ? (
+										<div className="flex items-center gap-2">
+											<Loader2 className="w-4 h-4 animate-spin" />
+											<span className="text-sm">Thinking...</span>
+										</div>
+									) : (
+										<p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+									)}
 								</div>
 							</div>
 						))}
+						<div ref={messagesEndRef} />
 					</div>
 
 					{/* Input */}
@@ -195,34 +281,39 @@ export function AIAssistant() {
 								value={input}
 								onChange={(e) => setInput(e.target.value)}
 								placeholder={placeholder}
+								disabled={isLoading}
 								className={clsx(
 									"flex-1 px-4 py-3",
 									"bg-[var(--color-base-800)] border border-[var(--color-border)] rounded-xl",
 									"text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]",
 									"focus:outline-none focus:border-[var(--color-primary)]",
 									"text-sm",
+									"disabled:opacity-50",
 								)}
 							/>
 							<button
 								type="submit"
-								disabled={!input.trim()}
+								disabled={!input.trim() || isLoading}
 								className={clsx(
 									"p-3 rounded-xl",
 									"transition-all duration-200",
 									"disabled:opacity-50 disabled:cursor-not-allowed",
-									input.trim()
+									input.trim() && !isLoading
 										? accentColor === "parent"
 											? "bg-[var(--color-parent-primary)] text-white hover:bg-[var(--color-parent-light)]"
 											: "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-light)]"
 										: "bg-[var(--color-base-700)] text-[var(--color-text-muted)]",
 								)}
 							>
-								<Send className="w-5 h-5" />
+								{isLoading ? (
+									<Loader2 className="w-5 h-5 animate-spin" />
+								) : (
+									<Send className="w-5 h-5" />
+								)}
 							</button>
 						</form>
 						<p className="text-xs text-[var(--color-text-muted)] mt-2 text-center">
-							{/* TODO: Integrate real AI backend here */}
-							AI features coming soon • Currently using placeholder responses
+							Powered by AI • Ask about stocks, investing, or your portfolio
 						</p>
 					</div>
 				</div>
