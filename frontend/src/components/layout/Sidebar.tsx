@@ -66,12 +66,12 @@ export function Sidebar({
         "flex flex-col",
         "transition-all duration-300 ease-out",
         "shadow-lg",
-        // Desktop behavior
-        "hidden lg:flex",
+        // Width
+        "w-[280px]",
         isCollapsed ? "lg:w-[72px]" : "lg:w-[280px]",
-        // Mobile behavior
-        mobileMenuOpen ? "flex" : "hidden lg:flex",
-        "w-[280px] lg:w-auto",
+        // Visibility: slide in/out on mobile, always visible on desktop
+        "lg:translate-x-0",
+        mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
       )}
     >
       {/* Logo & Toggle */}

@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "@tanstack/react-router";
+import { Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { clsx } from "clsx";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
@@ -8,6 +8,7 @@ import { Sidebar } from "./Sidebar";
 export function AppLayout() {
 	const { isAuthenticated, isLoading } = useAuth();
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -21,7 +22,7 @@ export function AppLayout() {
 	// Close mobile menu when route changes
 	useEffect(() => {
 		setMobileMenuOpen(false);
-	}, []);
+	}, [location.pathname]);
 
 	// Show loading state
 	if (isLoading) {
